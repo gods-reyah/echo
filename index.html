@@ -1,0 +1,1335 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="Abhi">
+
+    <title>Echo</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;400;700&display=swap" rel="stylesheet">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="css/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="css/templatemo-festava-live.css" rel="stylesheet">
+
+    <!--
+
+TemplateMo 583 Festava Live
+
+https://templatemo.com/tm-583-festava-live
+
+-->
+</head>
+
+<body>
+
+    <main>
+
+
+
+        <!-- ================= FINAL REFINED NAVBAR (Desktop + Mobile) ================= -->
+        <nav id="refinedNavbar" class="refined-navbar">
+            <div class="refined-container">
+                <!-- Brand -->
+                <a class="refined-brand" href="index.html">
+                    <img src="images/Black.png" alt="Logo" style="height:45px; width:auto;" />
+                </a>
+
+                <!-- Desktop nav (visible >= 992px) -->
+                <ul class="refined-nav refined-nav-desktop" id="refinedNavDesktop">
+                    <li><a class="refined-nav-link" href="#section_1">Home</a></li>
+                    <li><a class="refined-nav-link" href="#section_2">About</a></li>
+                    <li><a class="refined-nav-link" href="#section_6">Contact</a></li>
+                </ul>
+
+                <!-- Desktop Buy Ticket -->
+                <a href="ticket.html" class="refined-btn refined-btn-desktop" id="desktopRegisterBtn">Register</a>
+            </div>
+        </nav>
+
+        <!-- ================= CSS ================= -->
+        <style>
+            /* ---------- Base navbar wrapper ---------- */
+            .refined-navbar {
+                background: rgba(25, 25, 25, 0.85);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+                border-radius: 50px;
+                padding: 0.4rem 1rem;
+                display: inline-block;
+                margin: 1rem auto;
+                position: fixed;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 99999;
+                transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+                width: auto;
+            }
+
+            .refined-navbar.scrolled {
+                background: rgba(25, 25, 25, 0.95);
+                box-shadow: 0 10px 48px rgba(0, 0, 0, 0.45);
+            }
+
+            .refined-container {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            /* ---------- Desktop nav ---------- */
+            .refined-nav {
+                list-style: none;
+                display: flex;
+                gap: 0.9rem;
+                margin: 0;
+                padding: 0;
+                align-items: center;
+            }
+
+            .refined-nav-desktop {
+                display: flex;
+                margin-left: 0.4rem;
+            }
+
+            .refined-nav-link {
+                color: #fff;
+                text-decoration: none;
+                font-weight: 500;
+                padding: 0.45rem 0.8rem;
+                border-radius: 20px;
+                transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
+                display: inline-block;
+            }
+
+            .refined-nav-link:hover {
+                background: rgba(255, 255, 255, 0.06);
+                color: #ffd700;
+                transform: translateY(-1px);
+            }
+
+            .refined-nav-link.active {
+                background: #ff6600;
+                color: #fff;
+                font-weight: 600;
+                box-shadow: 0 6px 14px rgba(255, 102, 0, 0.16);
+            }
+
+            /* ---------- Buy Ticket button ---------- */
+            .refined-btn {
+                background: linear-gradient(45deg, #ff6600, #ff3b3b);
+                border: none;
+                border-radius: 24px;
+                padding: 0.45rem 1.1rem;
+                color: #fff;
+                font-weight: 600;
+                text-decoration: none;
+                display: inline-block;
+                transition: transform 0.18s ease, box-shadow 0.18s ease;
+            }
+
+            .refined-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 18px rgba(255, 102, 0, 0.18);
+            }
+
+            .refined-btn.active {
+                background: #ff6600;
+                color: #fff;
+                font-weight: 600;
+                box-shadow: 0 6px 14px rgba(255, 102, 0, 0.16);
+            }
+
+            .refined-btn-desktop {
+                display: inline-block;
+                margin-left: 0.6rem;
+            }
+
+            /* ---------- Responsive rules ---------- */
+            @media (max-width: 992px) {
+                .refined-navbar {
+                    width: auto;
+                    padding: 0;
+                    background: transparent;
+                    box-shadow: none;
+                    backdrop-filter: none;
+                    -webkit-backdrop-filter: none;
+                    position: fixed;
+                    top: 20px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                }
+
+                .refined-container {
+                    justify-content: center;
+                }
+
+                .refined-brand {
+                    width: 60px;
+                    height: 60px;
+                    background: rgba(25, 25, 25, 0.85);
+                    backdrop-filter: blur(12px);
+                    -webkit-backdrop-filter: blur(12px);
+                    border-radius: 16px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                    z-index: 99999;
+                    transition: transform 0.2s ease, box-shadow 0.2s ease;
+                }
+
+                .refined-brand:hover {
+                    transform: scale(1.05);
+                    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+                }
+
+                .refined-brand img {
+                    height: 35px !important;
+                    width: auto;
+                }
+
+                .refined-nav-desktop {
+                    display: none !important;
+                }
+
+                .refined-btn-desktop {
+                    display: none !important;
+                }
+            }
+
+            @media (max-width: 420px) {
+                .refined-brand {
+                    width: 50px;
+                    height: 50px;
+                }
+
+                .refined-brand img {
+                    height: 30px !important;
+                }
+            }
+        </style>
+
+        <!-- ================= JS ================= -->
+        <script>
+            (function () {
+                const navbar = document.getElementById('refinedNavbar');
+                const desktopRegisterBtn = document.getElementById('desktopRegisterBtn');
+
+                // scroll shadow / color
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) navbar.classList.add('scrolled');
+                    else navbar.classList.remove('scrolled');
+                });
+
+                // highlight the active nav link while scrolling
+                const sections = document.querySelectorAll('section[id]');
+                const allNavLinks = document.querySelectorAll('.refined-nav-link');
+
+                function highlightOnScroll() {
+                    const pos = window.scrollY + 120;
+                    let currentSection = '';
+
+                    sections.forEach(section => {
+                        if (pos >= section.offsetTop && pos < section.offsetTop + section.offsetHeight) {
+                            currentSection = section.id;
+                        }
+                    });
+
+                    // Update nav links
+                    allNavLinks.forEach(a => {
+                        a.classList.remove('active');
+                        if (a.getAttribute('href') === `#${currentSection}`) {
+                            a.classList.add('active');
+                        }
+                    });
+
+                    // Apply active style to the corresponding desktop button
+                    if (desktopRegisterBtn) {
+                        desktopRegisterBtn.classList.remove('active');
+
+                        // Check if we're in a section that should highlight the register button
+                        if (currentSection === 'section_1' || currentSection === 'section_2' || currentSection === 'section_6') {
+                            // Find the corresponding nav link and apply its active style to the register button
+                            const activeNavLink = document.querySelector(`.refined-nav-link[href="#${currentSection}"]`);
+                            if (activeNavLink && activeNavLink.classList.contains('active')) {
+                                desktopRegisterBtn.classList.add('active');
+                            }
+                        }
+                    }
+                }
+
+                window.addEventListener('scroll', highlightOnScroll);
+                // also run on load
+                highlightOnScroll();
+            })();
+        </script>
+
+        <section class="hero-section" id="section_1" style="height:110vh; margin-top:-56px; position: relative;">
+
+            <div class="section-overlay"></div>
+
+            <div class="container h-100 d-flex justify-content-center align-items-center">
+                <div class="row h-100 w-100 position-relative">
+
+                    <!-- Main Content: Perfectly Centered -->
+                    <div
+                        class="col-12 position-static d-flex flex-column justify-content-center align-items-center text-center">
+
+                        <div class="hero-main-content">
+                            <h3 class="presenter-main text-white">Jesus Youth Kannur<br> Campus Ministry</h3>
+                            <p class="presenter-sub text-white">Presents</p>
+                            <h1 class="text-white echo-title">ECHO</h1>
+                        </div>
+
+                        <!-- Bottom Bar: Positioned at the absolute bottom for Desktop -->
+                        <div class="hero-bottom-bar d-none d-lg-flex align-items-center w-100 px-3"
+                            style="position: absolute; bottom: 20px; left: 0; right: 0; justify-content: space-between;">
+
+                            <!-- Left Corner: Date -->
+                            <div class="date-wrap">
+                                <h5 class="text-white">
+                                    <i class="custom-icon bi-clock me-2"></i>
+                                    7<sup>th</sup>, Dec 2025
+                                </h5>
+                            </div>
+
+                            <!-- Center: Location (Perfectly Centered) -->
+                            <div class="location-wrap position-absolute start-50 translate-middle-x text-center">
+                                <a href="https://maps.app.goo.gl/sHF4mt7mrYHGD5J37" target="_blank">
+                                    <h5 class="text-white">
+                                        <i class="custom-icon bi-geo-alt me-2"></i>
+                                        St. Joseph's School, Pushpagiri
+                                    </h5>
+                                </a>
+                            </div>
+
+                            <!-- Right Corner: Social Links -->
+                            <div class="social-share">
+                                <ul class="social-icon d-flex align-items-center justify-content-center">
+                                    <span class="text-white me-3">Share:</span>
+                                    <li class="social-icon-item">
+                                        <a href="#" class="social-icon-link">
+                                            <span class="bi-facebook"></span>
+                                        </a>
+                                    </li>
+                                    <li class="social-icon-item">
+                                        <a href="#" class="social-icon-link">
+                                            <span class="bi-twitter"></span>
+                                        </a>
+                                    </li>
+                                    <li class="social-icon-item">
+                                        <a href="#" class="social-icon-link">
+                                            <span class="bi-instagram"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Mobile Content: Now correctly placed outside the desktop container -->
+                        <div class="mobile-content d-lg-none mt-auto">
+                            <a href="ticket.html" class="refined-btn mb-4">Register</a>
+
+                            <div class="date-wrap mb-3">
+                                <h5 class="text-white">
+                                    <i class="custom-icon bi-clock me-2"></i>
+                                    7<sup>th</sup>, Dec 2025
+                                </h5>
+                            </div>
+
+                            <div class="location-wrap mb-3">
+                                <a href="https://maps.app.goo.gl/sHF4mt7mrYHGD5J37" target="_blank">
+                                    <h5 class="text-white">
+                                        <i class="custom-icon bi-geo-alt me-2"></i>
+                                        St. Joseph's School, Pushpagiri
+                                    </h5>
+                                </a>
+                            </div>
+
+                            <div class="social-share">
+                                <ul class="social-icon d-flex align-items-center justify-content-center">
+                                    <span class="text-white me-3">Share:</span>
+                                    <li class="social-icon-item">
+                                        <a href="#" class="social-icon-link">
+                                            <span class="bi-facebook"></span>
+                                        </a>
+                                    </li>
+                                    <li class="social-icon-item">
+                                        <a href="#" class="social-icon-link">
+                                            <span class="bi-twitter"></span>
+                                        </a>
+                                    </li>
+                                    <li class="social-icon-item">
+                                        <a href="#" class="social-icon-link">
+                                            <span class="bi-instagram"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="video-wrap">
+                <video autoplay="" loop="" muted="" class="custom-video" poster="">
+                    <source src="video/pexels-2022395.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        </section>
+
+        <style>
+            /* Hero Section Updates */
+            .presenter-main {
+                font-size: 28px;
+                font-weight: 700;
+                letter-spacing: 1px;
+                margin-bottom: 5px;
+                color: var(--white-color);
+            }
+
+            .presenter-sub {
+                font-size: 18px;
+                font-weight: 400;
+                margin-top: 0;
+                margin-bottom: 20px;
+                color: var(--white-color);
+            }
+
+            .echo-title {
+                font-size: 160px;
+                font-weight: 900;
+                text-transform: uppercase;
+                letter-spacing: 15px;
+                position: relative;
+                margin-bottom: 50px;
+                color: var(--white-color);
+                text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+                z-index: 2;
+            }
+
+            /* Colorful rippling effect for ECHO title */
+            .echo-title::before,
+            .echo-title::after {
+                content: "ECHO";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: -1;
+                opacity: 0;
+                transform: scale(1);
+            }
+
+            .echo-title::before {
+                animation: ripple 3s infinite;
+                animation-delay: 0.5s;
+                background: linear-gradient(45deg, #F8CB2E, #EE5007, #F8CB2E);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                filter: blur(2px);
+            }
+
+            .echo-title::after {
+                animation: ripple 3s infinite;
+                animation-delay: 1s;
+                background: linear-gradient(45deg, #EE5007, #F8CB2E, #EE5007);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                filter: blur(4px);
+            }
+
+            @keyframes ripple {
+                0% {
+                    transform: scale(1);
+                    opacity: 0.8;
+                }
+
+                100% {
+                    transform: scale(1.15);
+                    opacity: 0;
+                }
+            }
+
+            /* Mobile adjustments */
+            @media (max-width: 991px) {
+                .presenter-main {
+                    font-size: 22px;
+                }
+
+                .presenter-sub {
+                    font-size: 16px;
+                }
+
+                .echo-title {
+                    font-size: 100px;
+                    letter-spacing: 8px;
+                    margin-bottom: 30px;
+                }
+
+                .refined-btn {
+                    padding: 12px 30px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    border-radius: 50px;
+                    background-color: var(--custom-btn-bg-color);
+                    color: var(--white-color);
+                    border: none;
+                    transition: all 0.3s ease;
+                    text-decoration: none;
+                    display: inline-block;
+                }
+
+                .refined-btn:hover {
+                    background-color: var(--custom-btn-bg-hover-color);
+                    transform: translateY(-3px);
+                }
+
+                .date-wrap,
+                .location-wrap {
+                    margin-bottom: 15px;
+                }
+
+                .social-icon-link {
+                    width: 40px;
+                    height: 40px;
+                    line-height: 40px;
+                    font-size: 18px;
+                }
+            }
+
+            @media (max-width: 767px) {
+                .echo-title {
+                    font-size: 80px;
+                    letter-spacing: 5px;
+                }
+
+                .presenter-main {
+                    font-size: 20px;
+                }
+            }
+
+            @media (max-width: 480px) {
+                .echo-title {
+                    font-size: 60px;
+                    letter-spacing: 3px;
+                }
+
+                .presenter-main {
+                    font-size: 18px;
+                }
+
+                .presenter-sub {
+                    font-size: 14px;
+                }
+            }
+        </style>
+
+
+        <section class="about-section section-padding d-flex align-items-center" id="section_2"
+            style="min-height: 100vh; position: relative; overflow: hidden;">
+
+            <!-- Background Image -->
+            <div class="about-bg"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('images/pexels-alexander-suhorucov-6457579.jpg') no-repeat center center; background-size: cover; filter: blur(8px); z-index: -1;">
+            </div>
+
+            <div class="container">
+                <div class="row align-items-center justify-content-center">
+
+                    <!-- Text Content -->
+                    <div class="col-lg-6 col-12 mb-4 mb-lg-0 order-2 order-lg-1">
+                        <div class="services-info wow fadeInLeft" data-wow-duration="1s" data-wow-delay="0.3s">
+                            <h2 class="text-white mb-4" style="font-weight: 700; font-size: 3rem;">About ECHO
+                            </h2>
+
+                            <p class="text-white mb-3">ECHO - Zonal Campus One Day initiated by Jesus Youth Kannur
+                                Zone Campus Ministry, to gather all our disciples of Christ in one place.</p>
+
+                            <h6 class="text-white mt-4" style="font-weight: 600;">Theme</h6>
+                            <p class="text-white">"Event is designed to connect with all zonal campus ministers, with
+                                engaging events and activities."</p>
+
+                            <h6 class="text-white mt-4" style="font-weight: 600;">Outcome</h6>
+                            <p class="text-white">"It fosters strong bond in the ministry, showing how collaboration
+                                makes every challenge enjoyable."
+                            </p>
+
+                        </div>
+                        <a href="ticket.html" class="refined-btn mb-4">Register</a>
+                    </div>
+
+
+                    <!-- Image Content -->
+                    <div class="col-lg-5 col-12 order-1 order-lg-2 mb-4 mb-lg-0">
+                        <div class="about-text-wrap position-relative wow fadeInRight" data-wow-duration="1s"
+                            data-wow-delay="0.3s" style="display: flex; flex-direction: column; align-items: center;">
+                            <img src="./images/pop.jpg" class="about-image img-fluid rounded shadow-lg"
+                                style="transform: translateY(0); transition: transform 1s ease-in-out; width: 100%;">
+
+                            <div class="about-text-info d-flex align-items-center p-3 bg-dark bg-opacity-50 rounded mt-4"
+                                style="width: 90%; max-width: 400px; transform: translateX(0); transition: transform 0.3s ease;">
+                                <div class="d-flex align-items-center">
+                                    <img src="images/yellow.png" alt="Logo" style="height:60px; width:auto;" />
+
+                                </div>
+                                <div class="ms-3">
+                                    <h3 class="text-white mb-1">A Happy Moment</h3>
+                                    <p class="text-white mb-0">An amazing experience with Jesus</p>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+
+        <style>
+            .about-section .services-info p,
+            .about-section .services-info h6 {
+                line-height: 1.6;
+            }
+
+            .about-image {
+                animation: floatImage 6s ease-in-out infinite;
+            }
+
+            @keyframes floatImage {
+                0% {
+                    transform: translateY(0);
+                }
+
+                50% {
+                    transform: translateY(-20px);
+                }
+
+                100% {
+                    transform: translateY(0);
+                }
+            }
+
+            /* Mobile-specific styles */
+            @media (max-width: 992px) {
+                .about-section {
+                    min-height: auto;
+                    padding: 80px 0;
+                }
+
+                .about-section h2 {
+                    font-size: 2rem !important;
+                }
+
+                .about-section p,
+                .about-section h6 {
+                    font-size: 1rem !important;
+                }
+
+                .about-text-wrap {
+                    margin: 0 auto;
+                    max-width: 500px;
+                }
+
+                .about-text-info {
+                    width: 100% !important;
+                    max-width: 100% !important;
+                    margin: 20px auto 0 !important;
+                }
+
+                .about-text-info h3 {
+                    font-size: 1.2rem;
+                }
+
+                .about-text-info p {
+                    font-size: 0.9rem;
+                }
+            }
+
+            @media (max-width: 576px) {
+                .about-section {
+                    padding: 60px 0;
+                }
+
+                .about-section h2 {
+                    font-size: 1.8rem !important;
+                }
+
+                .about-text-info img {
+                    height: 40px !important;
+                }
+
+                .about-text-info {
+                    padding: 15px !important;
+                }
+            }
+
+            /* Hover effect for the text card */
+            .about-text-info:hover {
+                transform: translateY(-5px) !important;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            }
+        </style>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
+        <script>
+            new WOW().init();
+        </script>
+
+
+
+        <section class="activities-section section-padding" id="section_3">
+            <div class="activities-bg"></div>
+            <div class="container position-relative">
+                <div class="row justify-content-center mb-5">
+                    <div class="col-12 text-center">
+                        <h2 class="display-4 fw-bold text-white animate__animated animate__fadeInDown">
+                            Christmas Activities
+                        </h2>
+                        <p class="text-light">Participate in these holy activities this Christmas season</p>
+                    </div>
+                </div>
+
+                <div class="row g-4" id="activities-container">
+                    <!-- Activity cards will be injected here -->
+                </div>
+            </div>
+
+            <!-- Bible Verse Modal -->
+            <div class="modal fade" id="bibleModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content bg-dark text-white rounded-4 border-0">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title fw-bold">Word of God</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="bible-verse text-center py-4">
+                                <p id="bible-text" class="fs-5 mb-3"></p>
+                                <p id="bible-reference" class="text-light fst-italic"></p>
+                            </div>
+                            <div class="text-center mt-4">
+                                <button id="mark-read-btn" class="btn btn-primary">Mark as Read</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Font Awesome -->
+            <link rel="stylesheet"
+                href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+            <!-- Animate.css -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+            <!-- Bootstrap CSS -->
+            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+            <!-- Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+            <style>
+                /* Background */
+                .activities-section {
+                    position: relative;
+                    min-height: 100vh;
+                    padding: 80px 0;
+                    color: #fff;
+                    overflow: hidden;
+                }
+
+                .activities-bg {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+                    z-index: 0;
+                }
+
+                .activities-section .container {
+                    position: relative;
+                    z-index: 2;
+                }
+
+                /* Activity Card - Glassmorphism Style */
+                .activity-card {
+                    backdrop-filter: blur(15px) saturate(180%);
+                    -webkit-backdrop-filter: blur(15px) saturate(180%);
+                    background-color: rgba(255, 255, 255, 0.1);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 16px;
+                    padding: 25px 20px;
+                    text-align: center;
+                    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+                    transition: transform 0.3s ease, box-shadow 0.3s ease;
+                    height: 100%;
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: space-between;
+                }
+
+                .activity-card:hover {
+                    transform: translateY(-8px);
+                    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4);
+                }
+
+                .activity-icon {
+                    width: 80px;
+                    height: 80px;
+                    margin: 0 auto 20px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border-radius: 50%;
+                    background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05));
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                }
+
+                .activity-icon i {
+                    font-size: 2rem;
+                    color: #fff;
+                }
+
+                .activity-card h5 {
+                    font-size: 1.5rem;
+                    margin-bottom: 15px;
+                    color: #fff;
+                }
+
+                .activity-card p {
+                    font-size: 0.9rem;
+                    margin-bottom: 20px;
+                    color: rgba(255, 255, 255, 0.8);
+                }
+
+                .progress-container {
+                    margin: 20px 0;
+                }
+
+                .progress {
+                    height: 10px;
+                    background-color: rgba(255, 255, 255, 0.1);
+                    border-radius: 10px;
+                    overflow: hidden;
+                }
+
+                .progress-bar {
+                    height: 100%;
+                    background: linear-gradient(90deg, #ff9800, #ff5722);
+                    border-radius: 10px;
+                    transition: width 0.5s ease;
+                }
+
+                .progress-text {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-top: 8px;
+                    font-size: 0.8rem;
+                    color: rgba(255, 255, 255, 0.7);
+                }
+
+                .activity-btn {
+                    background: linear-gradient(45deg, #ff9800, #ff5722);
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    font-size: 0.9rem;
+                    color: #fff;
+                    font-weight: 500;
+                    transition: 0.3s;
+                    margin-top: 15px;
+                    cursor: pointer;
+                }
+
+                .activity-btn:hover {
+                    opacity: 0.85;
+                    transform: scale(1.05);
+                }
+
+                .activity-btn.done {
+                    background: linear-gradient(45deg, #4caf50, #2e7d32);
+                }
+
+                .count-display {
+                    font-size: 1.2rem;
+                    font-weight: bold;
+                    margin: 10px 0;
+                    color: #ff9800;
+                }
+            </style>
+
+            <script type="module">
+                // Import Firebase
+                import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+                import { getDatabase, ref, get, set, update } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-database.js";
+
+                // Firebase configuration
+                const firebaseConfig = {
+                    apiKey: "AIzaSyDMQBL2vo6Tk-NzmXAi35fPbkzf25BI5Rg",
+                    authDomain: "ponthiff.firebaseapp.com",
+                    databaseURL: "https://ponthiff-default-rtdb.asia-southeast1.firebasedatabase.app/",
+                    projectId: "ponthiff",
+                    storageBucket: "ponthiff.firebasestorage.app",
+                    messagingSenderId: "388474682243",
+                    appId: "1:388474682243:web:0ecbe481f1d69abf3714b6"
+                };
+
+                // Initialize Firebase
+                const app = initializeApp(firebaseConfig);
+                const database = getDatabase(app);
+
+                // Activities data
+                const activities = [
+                    {
+                        id: "holy-mass",
+                        title: "Holy Mass",
+                        icon: "fa-church",
+                        description: "It's Christmas time, let's participate in a Holy Mass",
+                        type: "progress",
+                        maxProgress: 25
+                    },
+                    {
+                        id: "confession",
+                        title: "Confession",
+                        icon: "fa-cross",
+                        description: "Let's confess and prepare for the event",
+                        type: "done"
+                    },
+                    {
+                        id: "word-of-god",
+                        title: "Word of God",
+                        icon: "fa-book-bible",
+                        description: "Read a Bible portion",
+                        type: "count",
+                        bibleVerses: [
+                            { text: "For unto us a child is born, unto us a son is given: and the government shall be upon his shoulder: and his name shall be called Wonderful, Counsellor, The mighty God, The everlasting Father, The Prince of Peace.", reference: "Isaiah 9:6" },
+                            { text: "And she shall bring forth a son, and thou shalt call his name JESUS: for he shall save his people from their sins.", reference: "Matthew 1:21" },
+                            { text: "And the angel said unto them, Fear not: for, behold, I bring you good tidings of great joy, which shall be to all people.", reference: "Luke 2:10" },
+                            { text: "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.", reference: "John 3:16" }
+                        ]
+                    },
+                    {
+                        id: "hail-mary",
+                        title: "Hail Mary",
+                        icon: "fa-hands-praying",
+                        description: "Recite a Hail Mary prayer",
+                        type: "count"
+                    }
+                ];
+
+                // DOM elements
+                const activitiesContainer = document.getElementById("activities-container");
+                const bibleModal = new bootstrap.Modal(document.getElementById('bibleModal'));
+                const bibleText = document.getElementById("bible-text");
+                const bibleReference = document.getElementById("bible-reference");
+                const markReadBtn = document.getElementById("mark-read-btn");
+
+                // Initialize activities data in Firebase if not exists
+                async function initializeActivitiesData() {
+                    for (const activity of activities) {
+                        const activityRef = ref(database, `activities/${activity.id}`);
+                        const snapshot = await get(activityRef);
+
+                        if (!snapshot.exists()) {
+                            // Initialize with default values
+                            const defaultData = activity.type === "progress"
+                                ? { count: 0, maxProgress: activity.maxProgress }
+                                : { count: 0 };
+
+                            await set(activityRef, defaultData);
+                        }
+                    }
+                }
+
+                // Get activity count from Firebase
+                async function getActivityCount(activityId) {
+                    const activityRef = ref(database, `activities/${activityId}`);
+                    const snapshot = await get(activityRef);
+
+                    if (snapshot.exists()) {
+                        return snapshot.val().count || 0;
+                    }
+
+                    return 0;
+                }
+
+                // Update activity count in Firebase
+                async function updateActivityCount(activityId, incrementValue = 1) {
+                    const activityRef = ref(database, `activities/${activityId}`);
+                    const currentCount = await getActivityCount(activityId);
+                    const newCount = currentCount + incrementValue;
+
+                    await update(activityRef, { count: newCount });
+                    return newCount;
+                }
+
+                // Render activity cards
+                async function renderActivities() {
+                    // Clear container first
+                    activitiesContainer.innerHTML = "";
+
+                    for (const [index, activity] of activities.entries()) {
+                        const count = await getActivityCount(activity.id);
+                        const col = document.createElement("div");
+                        col.className = "col-lg-6 col-md-6 col-12";
+
+                        let cardContent = `
+                            <div class="activity-card animate__animated animate__fadeInUp" style="animation-delay:${index * 0.1}s">
+                                <div class="activity-icon">
+                                    <i class="fas ${activity.icon}"></i>
+                                </div>
+                                <h5>${activity.title}</h5>
+                                <p>${activity.description}</p>
+                        `;
+
+                        if (activity.type === "progress") {
+                            const progressPercent = (count / activity.maxProgress) * 100;
+                            cardContent += `
+                                <div class="progress-container">
+                                    <div class="progress">
+                                        <div class="progress-bar" style="width: ${progressPercent}%"></div>
+                                    </div>
+                                    <div class="progress-text">
+                                        <span>Progress: ${count}/${activity.maxProgress}</span>
+                                        <span>${Math.round(progressPercent)}%</span>
+                                    </div>
+                                </div>
+                                <button class="activity-btn" data-activity="${activity.id}">
+                                    <i class="fas fa-plus"></i> Participate
+                                </button>
+                            `;
+                        } else if (activity.type === "done") {
+                            cardContent += `
+                                <div class="count-display">Completed: ${count} times</div>
+                                <button class="activity-btn done" data-activity="${activity.id}">
+                                    <i class="fas fa-check"></i> Done
+                                </button>
+                            `;
+                        } else if (activity.type === "count") {
+                            cardContent += `
+                                <div class="count-display">Count: ${count}</div>
+                                <button class="activity-btn" data-activity="${activity.id}">
+                                    <i class="fas fa-plus"></i> Update Count
+                                </button>
+                            `;
+                        }
+
+                        cardContent += `
+                            </div>
+                        `;
+
+                        col.innerHTML = cardContent;
+                        activitiesContainer.appendChild(col);
+                    }
+                }
+
+                // Handle button clicks
+                document.addEventListener("click", async (e) => {
+                    if (e.target.closest(".activity-btn")) {
+                        const btn = e.target.closest(".activity-btn");
+                        const activityId = btn.dataset.activity;
+                        const activity = activities.find(a => a.id === activityId);
+
+                        if (activity.type === "progress") {
+                            const currentCount = await getActivityCount(activityId);
+                            if (currentCount < activity.maxProgress) {
+                                const newCount = await updateActivityCount(activityId);
+                                // Update UI
+                                const progressBar = btn.parentElement.querySelector(".progress-bar");
+                                const progressPercent = (newCount / activity.maxProgress) * 100;
+                                progressBar.style.width = `${progressPercent}%`;
+
+                                const progressText = btn.parentElement.querySelector(".progress-text span:first-child");
+                                progressText.textContent = `Progress: ${newCount}/${activity.maxProgress}`;
+
+                                const progressPercentText = btn.parentElement.querySelector(".progress-text span:last-child");
+                                progressPercentText.textContent = `${Math.round(progressPercent)}%`;
+
+                                if (newCount >= activity.maxProgress) {
+                                    btn.disabled = true;
+                                    btn.innerHTML = '<i class="fas fa-check"></i> Completed';
+                                }
+                            }
+                        } else if (activity.type === "done") {
+                            await updateActivityCount(activityId);
+                            // Update UI
+                            const countDisplay = btn.parentElement.querySelector(".count-display");
+                            const currentCount = await getActivityCount(activityId);
+                            countDisplay.textContent = `Completed: ${currentCount} times`;
+                        } else if (activity.type === "count") {
+                            if (activityId === "word-of-god") {
+                                // Show Bible verse modal
+                                const randomVerse = activity.bibleVerses[Math.floor(Math.random() * activity.bibleVerses.length)];
+                                bibleText.textContent = randomVerse.text;
+                                bibleReference.textContent = randomVerse.reference;
+                                bibleModal.show();
+                            } else {
+                                // Direct update for other count types
+                                await updateActivityCount(activityId);
+                                // Update UI
+                                const countDisplay = btn.parentElement.querySelector(".count-display");
+                                const currentCount = await getActivityCount(activityId);
+                                countDisplay.textContent = `Count: ${currentCount}`;
+                            }
+                        }
+                    }
+                });
+
+                // Handle Mark as Read button
+                markReadBtn.addEventListener("click", async () => {
+                    await updateActivityCount("word-of-god");
+                    bibleModal.hide();
+
+                    // Update UI
+                    const wordOfGodCard = document.querySelector('[data-activity="word-of-god"]').closest(".activity-card");
+                    const countDisplay = wordOfGodCard.querySelector(".count-display");
+                    const currentCount = await getActivityCount("word-of-god");
+                    countDisplay.textContent = `Count: ${currentCount}`;
+                });
+
+                // Initialize
+                try {
+                    await initializeActivitiesData();
+                    await renderActivities();
+                    console.log("Activities initialized successfully");
+                } catch (error) {
+                    console.error("Error initializing activities:", error);
+                    // Display error message to user
+                    activitiesContainer.innerHTML = `
+                        <div class="col-12">
+                            <div class="alert alert-danger">
+                                Error loading activities: ${error.message}
+                            </div>
+                        </div>
+                    `;
+                }
+            </script>
+        </section>
+
+
+
+
+
+
+
+        <section class="contact-section section-padding" id="section_6">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-8 col-12 mx-auto">
+                        <h2 class="text-center mb-4">Christmas Friends</h2>
+
+                        <nav class="d-flex justify-content-center">
+                            <div class="nav nav-tabs align-items-baseline justify-content-center" id="nav-tab"
+                                role="tablist">
+                                <button class="nav-link active" id="nav-ContactForm-tab" data-bs-toggle="tab"
+                                    data-bs-target="#nav-ContactForm" type="button" role="tab"
+                                    aria-controls="nav-ContactForm" aria-selected="false">
+                                    <h5>Register</h5>
+                                </button>
+
+                                <button class="nav-link" id="nav-ContactMap-tab" data-bs-toggle="tab"
+                                    data-bs-target="#nav-ContactMap" type="button" role="tab"
+                                    aria-controls="nav-ContactMap" aria-selected="false">
+                                    <h5>My Friend</h5>
+                                </button>
+                            </div>
+                        </nav>
+
+                        <div class="tab-content shadow-lg mt-5" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-ContactForm" role="tabpanel"
+                                aria-labelledby="nav-ContactForm-tab">
+                                <form class="custom-form contact-form mb-5 mb-lg-0" action="#" method="post"
+                                    role="form">
+                                    <div class="contact-form-body">
+                                        <div class="row">
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <input type="text" name="contact-name" id="contact-name"
+                                                    class="form-control" placeholder="Full name" required>
+                                            </div>
+
+                                            <div class="col-lg-6 col-md-6 col-12">
+                                                <input type="email" name="contact-email" id="contact-email"
+                                                    pattern="[^ @]*@[^ @]*" class="form-control"
+                                                    placeholder="Email address" required>
+                                            </div>
+                                        </div>
+
+                                        <input type="text" name="contact-company" id="contact-company"
+                                            class="form-control" placeholder="Company" required>
+
+                                        <textarea name="contact-message" rows="3" class="form-control"
+                                            id="contact-message" placeholder="Message"></textarea>
+
+                                        <div class="col-lg-4 col-md-10 col-8 mx-auto">
+                                            <button type="submit" class="form-control">Send message</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="tab-pane fade" id="nav-ContactMap" role="tabpanel"
+                                aria-labelledby="nav-ContactMap-tab">
+                                <iframe class="google-map"
+                                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d29974.469402870927!2d120.94861466021855!3d14.106066818082482!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33bd777b1ab54c8f%3A0x6ecc514451ce2be8!2sTagaytay%2C%20Cavite%2C%20Philippines!5e1!3m2!1sen!2smy!4v1670344209509!5m2!1sen!2smy"
+                                    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                                    referrerpolicy="no-referrer-when-downgrade"></iframe>
+                                <!-- You can easily copy the embed code from Google Maps -> Share -> Embed a map // -->
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+    <footer class="site-footer">
+        <div class="site-footer-top">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-6 col-12">
+                        <h2 class="text-white mb-lg-0">Contact</h2>
+                    </div>
+
+                    <div class="col-lg-6 col-12 d-flex justify-content-lg-end align-items-center">
+                        <ul class="social-icon d-flex justify-content-lg-end">
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link">
+                                    <span class="bi-twitter"></span>
+                                </a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link">
+                                    <span class="bi-apple"></span>
+                                </a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link">
+                                    <span class="bi-instagram"></span>
+                                </a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link">
+                                    <span class="bi-youtube"></span>
+                                </a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link">
+                                    <span class="bi-pinterest"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-6 col-12 mb-4 pb-2">
+                    <h5 class="site-footer-title mb-3">Links</h5>
+
+                    <ul class="site-footer-links">
+                        <li class="site-footer-link-item">
+                            <a href="#" class="site-footer-link">Home</a>
+                        </li>
+
+                        <li class="site-footer-link-item">
+                            <a href="#" class="site-footer-link">About</a>
+                        </li>
+
+
+                        <li class="site-footer-link-item">
+                            <a href="#" class="site-footer-link">Contact</a>
+                        </li>
+                    </ul>
+                    <p class="copyright-text">Copyright © 2025 JY Kannur CCT</p>
+
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
+                    <h5 class="site-footer-title mb-3">Have a question?</h5>
+
+                    <p class="text-white d-flex mb-1">
+                        <a href="tel: 090-080-0760" class="site-footer-link">
+                            +91 86068 68931
+                        </a>
+                    </p>
+
+                    <p class="text-white d-flex">
+                        <a href="mailto:hello@company.com" class="site-footer-link">
+                            KannurCCT@jy.com
+                        </a>
+                    </p>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-11 mb-4 mb-lg-0 mb-md-0">
+                    <h5 class="site-footer-title mb-3">Location</h5>
+
+                    <p class="text-white d-flex mt-3 mb-2">
+                        St. Joseph's School, Pushpagiri, Thaliparamba, Kannur.</p>
+
+                    <a class="link-fx-1 color-contrast-higher mt-3" href="https://maps.app.goo.gl/r8Z6tWzCtVFDLt3y7"
+                        target="_blank">
+                        <span>Our Maps</span>
+                        <svg class="icon" viewBox="0 0 32 32" aria-hidden="true">
+                            <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="16" cy="16" r="15.5"></circle>
+                                <line x1="10" y1="18" x2="16" y2="12"></line>
+                                <line x1="16" y1="12" x2="22" y2="18"></line>
+                            </g>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+
+    </footer>
+
+    <!--
+
+
+
+-->
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    <script src="js/click-scroll.js"></script>
+    <script src="js/custom.js"></script>
+
+</body>
+
+</html>

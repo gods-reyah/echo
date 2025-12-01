@@ -1,0 +1,587 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Registration- Ponthiff</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;400;700&display=swap" rel="stylesheet">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="css/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="css/templatemo-festava-live.css" rel="stylesheet">
+    <!--
+
+TemplateMo 583 Festava Live
+
+https://templatemo.com/tm-583-festava-live
+
+-->
+
+</head>
+
+<body>
+
+    <main>
+
+
+
+
+        <!-- ================= FINAL REFINED NAVBAR (Desktop + Mobile) ================= -->
+        <nav id="refinedNavbar" class="refined-navbar">
+            <div class="refined-container">
+                <!-- Brand -->
+                <a class="refined-brand" href="index.html">
+                    <img src="images/Black.png" alt="Logo" style="height:45px; width:auto;" />
+                </a>
+
+                <!-- Desktop nav (visible >= 992px) -->
+                <ul class="refined-nav refined-nav-desktop" id="refinedNavDesktop">
+                    <li><a href="index.html" class="refined-btn refined-btn-desktop">Home</a></li>
+
+                    <li><a class="refined-nav-link" href="#footer">Contact</a></li>
+                </ul>
+
+                <!-- Desktop Buy Ticket -->
+
+
+                <!-- Mobile toggler (hidden on desktop) -->
+                <button id="refinedToggler" class="refined-toggler" aria-expanded="false" aria-label="Open menu">
+                    <span class="refined-toggler-icon"></span>
+                </button>
+            </div>
+
+            <!-- Mobile dropdown menu (hidden on desktop) -->
+            <div id="refinedMobileMenu" class="refined-mobile-menu" aria-hidden="true">
+                <button id="refinedClose" class="refined-close-btn" aria-label="Close menu">&times;</button>
+
+                <ul class="refined-nav refined-nav-mobile" id="refinedNavMobile">
+                    <li><a href="index.html" class="refined-btn refined-btn-mobile">Home</a></li>
+                </ul>
+
+
+            </div>
+        </nav>
+
+        <!-- ================= CSS ================= -->
+        <style>
+            /* ---------- Base navbar wrapper ---------- */
+            .refined-navbar {
+                background: rgba(25, 25, 25, 0.85);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+                border-radius: 50px;
+                padding: 0.4rem 1rem;
+                display: inline-block;
+                margin: 1rem auto;
+                position: fixed;
+                top: 10px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 99999;
+                transition: background 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+                width: auto;
+                /* auto-fit to content */
+            }
+
+            /* Slightly darker when scrolled */
+            .refined-navbar.scrolled {
+                background: rgba(25, 25, 25, 0.95);
+                box-shadow: 0 10px 48px rgba(0, 0, 0, 0.45);
+            }
+
+            /* container that holds brand + desktop nav + buy + toggler */
+            .refined-container {
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+            }
+
+            /* ---------- Desktop nav ---------- */
+            .refined-nav {
+                list-style: none;
+                display: flex;
+                gap: 0.9rem;
+                margin: 0;
+                padding: 0;
+                align-items: center;
+            }
+
+            .refined-nav-desktop {
+                display: flex;
+                /* visible on desktop */
+                margin-left: 0.4rem;
+            }
+
+            /* link styling (shared desktop + mobile) */
+            .refined-nav-link {
+                color: #fff;
+                text-decoration: none;
+                font-weight: 500;
+                padding: 0.45rem 0.8rem;
+                border-radius: 20px;
+                transition: background 0.18s ease, color 0.18s ease, transform 0.12s ease;
+                display: inline-block;
+            }
+
+            .refined-nav-link:hover {
+                background: rgba(255, 255, 255, 0.06);
+                color: #ffd700;
+                transform: translateY(-1px);
+            }
+
+            /* Active / highlighted (rounded pill) */
+            .refined-nav-link.active {
+                background: #ff6600;
+                color: #fff;
+                font-weight: 600;
+                box-shadow: 0 6px 14px rgba(255, 102, 0, 0.16);
+            }
+
+            /* ---------- Buy Ticket button ---------- */
+            .refined-btn {
+                background: linear-gradient(45deg, #ff6600, #ff3b3b);
+                border: none;
+                border-radius: 24px;
+                padding: 0.45rem 1.1rem;
+                color: #fff;
+                font-weight: 600;
+                text-decoration: none;
+                display: inline-block;
+                transition: transform 0.18s ease, box-shadow 0.18s ease;
+            }
+
+            .refined-btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 6px 18px rgba(255, 102, 0, 0.18);
+            }
+
+            /* difference between mobile/desktop buy buttons (for layout control) */
+            .refined-btn-desktop {
+                display: inline-block;
+                margin-left: 0.6rem;
+            }
+
+            .refined-btn-mobile {
+                display: none;
+                width: 100%;
+                margin-top: 0.6rem;
+            }
+
+            /* ---------- Toggler (hamburger) ---------- */
+            .refined-toggler {
+                display: none;
+                background: none;
+                border: none;
+                cursor: pointer;
+                margin-left: auto;
+                padding: 8px;
+            }
+
+            .refined-toggler-icon {
+                display: block;
+                width: 22px;
+                height: 2px;
+                background: #fff;
+                position: relative;
+            }
+
+            .refined-toggler-icon::before,
+            .refined-toggler-icon::after {
+                content: "";
+                position: absolute;
+                left: 0;
+                width: 22px;
+                height: 2px;
+                background: #fff;
+            }
+
+            .refined-toggler-icon::before {
+                top: -7px;
+            }
+
+            .refined-toggler-icon::after {
+                top: 7px;
+            }
+
+            /* ---------- Mobile menu (hidden on desktop) ---------- */
+            .refined-mobile-menu {
+                display: none;
+                /* toggled by .show class */
+                position: relative;
+                margin-top: 0.6rem;
+                width: calc(100% - 2rem);
+                left: 50%;
+                transform: translateX(-50%);
+                background: rgba(25, 25, 25, 0.98);
+                border-radius: 12px;
+                padding: 0.9rem 1rem;
+                box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+                animation: none;
+            }
+
+            /* visible state with slideDown */
+            .refined-mobile-menu.show {
+                display: flex;
+                flex-direction: column;
+                animation: slideDown 260ms cubic-bezier(.2, .9, .2, 1);
+            }
+
+            @keyframes slideDown {
+                from {
+                    opacity: 0;
+                    transform: translate(-50%, -10px)
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translate(-50%, 0)
+                }
+            }
+
+            /* close button inside mobile menu */
+            .refined-close-btn {
+                align-self: flex-end;
+                background: none;
+                border: none;
+                font-size: 1.6rem;
+                color: #fff;
+                cursor: pointer;
+                padding: 0;
+                line-height: 1;
+            }
+
+            /* mobile nav vertical style */
+            .refined-nav-mobile {
+                display: flex;
+                flex-direction: column;
+                gap: 0.6rem;
+                margin: 0.4rem 0;
+                padding: 0;
+                width: 100%;
+            }
+
+            .refined-nav-mobile .refined-nav-link {
+                padding: 0.7rem 0.8rem;
+                border-radius: 10px;
+                text-align: center;
+            }
+
+            /* ---------- Responsive rules ---------- */
+            @media (max-width: 992px) {
+                .refined-navbar {
+                    width: 95%;
+                    padding: 0.45rem 1rem;
+                }
+
+                /* hide desktop nav + desktop buy button */
+                .refined-nav-desktop {
+                    display: none !important;
+                }
+
+                .refined-btn-desktop {
+                    display: none !important;
+                }
+
+                /* show toggler */
+                .refined-toggler {
+                    display: inline-block;
+                }
+
+                /* mobile buy visible */
+                .refined-btn-mobile {
+                    display: block;
+                }
+
+                /* ensure mobile menu sits below navbar visually */
+                .refined-mobile-menu {
+                    width: calc(100% - 1.2rem);
+                    margin-top: 0.6rem;
+                }
+            }
+
+            /* tidy small screens even more */
+            @media (max-width: 420px) {
+                .refined-navbar {
+                    padding: 0.35rem 0.9rem;
+                }
+
+                .refined-brand img {
+                    height: 40px;
+                }
+
+                .refined-btn {
+                    padding: 0.4rem 0.9rem;
+                }
+            }
+        </style>
+
+        <!-- ================= JS ================= -->
+        <script>
+            (function () {
+                const navbar = document.getElementById('refinedNavbar');
+                const toggler = document.getElementById('refinedToggler');
+                const mobileMenu = document.getElementById('refinedMobileMenu');
+                const closeBtn = document.getElementById('refinedClose');
+
+                // scroll shadow / color
+                window.addEventListener('scroll', () => {
+                    if (window.scrollY > 50) navbar.classList.add('scrolled');
+                    else navbar.classList.remove('scrolled');
+                });
+
+                // open mobile menu
+                toggler && toggler.addEventListener('click', () => {
+                    mobileMenu.classList.add('show');
+                    mobileMenu.setAttribute('aria-hidden', 'false');
+                    toggler.setAttribute('aria-expanded', 'true');
+                    // prevent page scroll when open (optional)
+                    document.body.style.overflow = 'hidden';
+                });
+
+                // close mobile menu
+                closeBtn && closeBtn.addEventListener('click', closeMobileMenu);
+                function closeMobileMenu() {
+                    mobileMenu.classList.remove('show');
+                    mobileMenu.setAttribute('aria-hidden', 'true');
+                    toggler.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = ''; // restore
+                }
+
+                // auto-close mobile menu when a mobile link is clicked
+                document.querySelectorAll('#refinedNavMobile .refined-nav-link').forEach(link => {
+                    link.addEventListener('click', () => {
+                        closeMobileMenu();
+                    });
+                });
+
+                // make desktop links work as normal (no interference)
+                // highlight the active nav link while scrolling
+                const sections = document.querySelectorAll('section[id]');
+                const allNavLinks = document.querySelectorAll('.refined-nav-link');
+
+                function highlightOnScroll() {
+                    const pos = window.scrollY + 120;
+                    sections.forEach(section => {
+                        if (pos >= section.offsetTop && pos < section.offsetTop + section.offsetHeight) {
+                            allNavLinks.forEach(a => {
+                                a.classList.remove('active');
+                                if (a.getAttribute('href') === `#${section.id}`) {
+                                    a.classList.add('active');
+                                }
+                            });
+                        }
+                    });
+                }
+                window.addEventListener('scroll', highlightOnScroll);
+                // also run on load
+                highlightOnScroll();
+
+                // Ensure mobile menu is closed when window is resized to desktop
+                window.addEventListener('resize', () => {
+                    if (window.innerWidth > 992) closeMobileMenu();
+                });
+            })();
+        </script>
+
+
+        <section class="ticket-section section-padding">
+            <div class="section-overlay"></div>
+
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-6 col-10 mx-auto">
+                        <form class="custom-form ticket-form mb-5 mb-lg-0" action="#" method="post" role="form">
+                            <h2 class="text-center mb-4">Registration</h2>
+
+                            <div class="ticket-form-body">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <input type="text" name="ticket-form-name" id="ticket-form-name"
+                                            class="form-control" placeholder="Full name" required>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <input type="email" name="ticket-form-email" id="ticket-form-email"
+                                            pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email address"
+                                            required>
+                                    </div>
+                                </div>
+
+                                <input type="tel" class="form-control" name="ticket-form-phone"
+                                    placeholder="Ph 085-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required="">
+
+                                <h6>Choose Ticket Type</h6>
+
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-check form-control">
+                                            <input class="form-check-input" type="radio" name="TicketForm"
+                                                id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                                Eary bird $120
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-12">
+                                        <div class="form-check form-check-radio form-control">
+                                            <input class="form-check-input" type="radio" name="TicketForm"
+                                                id="flexRadioDefault2">
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                Standard $240
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="number" name="ticket-form-number" id="ticket-form-number"
+                                    class="form-control" placeholder="Number of Tickets" required>
+
+                                <textarea name="ticket-form-message" rows="3" class="form-control"
+                                    id="ticket-form-message" placeholder="Additional Request"></textarea>
+
+                                <div class="col-lg-4 col-md-10 col-8 mx-auto">
+                                    <button type="submit" class="form-control">Register</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+        </section>
+    </main>
+
+
+    <footer class="site-footer" id="footer">
+        <div class="site-footer-top">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-6 col-12">
+                        <h2 class="text-white mb-lg-0">Contact</h2>
+                    </div>
+
+                    <div class="col-lg-6 col-12 d-flex justify-content-lg-end align-items-center">
+                        <ul class="social-icon d-flex justify-content-lg-end">
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link">
+                                    <span class="bi-twitter"></span>
+                                </a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link">
+                                    <span class="bi-apple"></span>
+                                </a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link">
+                                    <span class="bi-instagram"></span>
+                                </a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link">
+                                    <span class="bi-youtube"></span>
+                                </a>
+                            </li>
+
+                            <li class="social-icon-item">
+                                <a href="#" class="social-icon-link">
+                                    <span class="bi-pinterest"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+
+                <div class="col-lg-6 col-12 mb-4 pb-2">
+                    <h5 class="site-footer-title mb-3">Links</h5>
+                    <div class="col-lg-3 col-md-6 col-11 mb-4 mb-lg-0 mb-md-0">
+                        <h5 class="site-footer-title mb-3">Location</h5>
+
+                        <p class="text-white d-flex mt-3 mb-2">
+                            Darshana Retreat Centre, Pushpagiri, Thaliparamba, Kannur.</p>
+
+                        <a class="link-fx-1 color-contrast-higher mt-3" href="https://maps.app.goo.gl/sHF4mt7mrYHGD5J37"
+                            target="_blank">
+                            <span>Our Maps</span>
+                            <svg class="icon" viewBox="0 0 32 32" aria-hidden="true">
+                                <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="16" cy="16" r="15.5"></circle>
+                                    <line x1="10" y1="18" x2="16" y2="12"></line>
+                                    <line x1="16" y1="12" x2="22" y2="18"></line>
+                                </g>
+                            </svg>
+                        </a>
+                    </div>
+
+                    <ul class="site-footer-links">
+                        <li class="site-footer-link-item">
+                            <a href="index.html" class="site-footer-link" style="color: yellow;">Home</a>
+                        </li>
+
+                    </ul>
+
+
+                </div>
+
+
+                <div class="col-lg-3 col-md-6 col-12 mb-4 mb-lg-0">
+                    <h5 class="site-footer-title mb-3">Have a question?</h5>
+
+                    <p class="text-white d-flex mb-1">
+                        <a href="tel: 090-080-0760" class="site-footer-link">
+                            +91 86068 68931
+                        </a>
+                    </p>
+
+                    <p class="text-white d-flex">
+                        <a href="mailto:hello@company.com" class="site-footer-link">
+                            KannurCCT@jy.com
+                        </a>
+                    </p>
+                    <p class="copyright-text">Copyright © 2025 JY Kannur CCT</p>
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </footer>
+
+    <!--
+
+T e m p l a t e M o
+
+-->
+    <!-- JAVASCRIPT FILES -->
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/jquery.sticky.js"></script>
+    <script src="js/custom.js"></script>
+
+</body>
+
+</html>
