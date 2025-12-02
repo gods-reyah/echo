@@ -472,36 +472,6 @@ strong {
 }
 
 
-/*---------------------------------------
-  HERO        
------------------------------------------*/
-.hero-section {
-  position: relative;
-  overflow: hidden;
-  padding-top: 100px;
-  height: calc(100vh - 51px);
-}
-
-.hero-section small {
-  color: var(--white-color);
-  text-transform: uppercase;
-}
-
-.hero-section .section-overlay {
-  z-index: 2;
-  opacity: 0.45;
-}
-
-.hero-section .container {
-  position: relative;
-  z-index: 2;
-  height: 100%;
-  padding-bottom: 50px;
-}
-
-.hero-section .container .row {
-  height: 100%;
-}
 
 
 /*---------------------------------------
@@ -552,7 +522,7 @@ strong {
 /*---------------------------------------
   TICKET               
 -----------------------------------------*/
-.ticket-section {
+.ticket-section {  
   background-image: url('../images/event.jpg');
   background-repeat: no-repeat;
   background-size: cover;
@@ -1023,3 +993,4 @@ strong {
     font-size: 20px;
   }
 }
+
