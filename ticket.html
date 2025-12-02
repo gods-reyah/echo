@@ -398,70 +398,454 @@ https://templatemo.com/tm-583-festava-live
         </script>
 
 
-        <section class="ticket-section section-padding">
-            <div class="section-overlay"></div>
+        <section class="ticket-section section-padding"
+            style="position: relative; min-height: 100vh; display: flex; align-items: center;">
+            <div class="section-overlay"
+                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1;">
+            </div>
 
-            <div class="container">
-                <div class="row">
-
-                    <div class="col-lg-6 col-10 mx-auto">
-                        <form class="custom-form ticket-form mb-5 mb-lg-0" action="#" method="post" role="form">
-                            <h2 class="text-center mb-4">Registration</h2>
+            <div class="container" style="z-index: 2; position: relative;">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 col-md-8 col-11 mx-auto">
+                        <form id="registrationForm" class="custom-form ticket-form" action="#" method="post" role="form"
+                            novalidate>
+                            <h2 class="text-center mb-4">Event Registration</h2>
 
                             <div class="ticket-form-body">
+                                <!-- Name, Email, Phone -->
                                 <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <input type="text" name="ticket-form-name" id="ticket-form-name"
-                                            class="form-control" placeholder="Full name" required>
+                                    <div class="col-md-6 col-12 mb-3">
+                                        <input type="text" name="name" id="fullName" class="form-control"
+                                            placeholder="Full Name" required>
                                     </div>
+                                    <div class="col-md-6 col-12 mb-3">
+                                        <input type="email" name="email" id="email" class="form-control"
+                                            placeholder="Email Address" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <input type="tel" name="phone" id="phone" class="form-control"
+                                        placeholder="Phone Number" pattern="[0-9]{10}"
+                                        title="Please enter a 10-digit phone number" required>
+                                </div>
 
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <input type="email" name="ticket-form-email" id="ticket-form-email"
-                                            pattern="[^ @]*@[^ @]*" class="form-control" placeholder="Email address"
-                                            required>
+                                <!-- Date of Birth, Gender -->
+                                <div class="row">
+                                    <div class="col-md-6 col-12 mb-3">
+                                        <label for="dob" class="form-label text-light">Date of Birth</label>
+                                        <input type="date" name="dob" id="dob" class="form-control" required>
+                                    </div>
+                                    <div class="col-md-6 col-12 mb-3">
+                                        <label for="gender" class="form-label text-light">Gender</label>
+                                        <select name="gender" id="gender" class="form-select" required>
+                                            <option value="" disabled selected>Select Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                        </select>
                                     </div>
                                 </div>
 
-                                <input type="tel" class="form-control" name="ticket-form-phone"
-                                    placeholder="Ph 085-456-7890" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required="">
+                                <!-- College -->
+                                <div class="mb-3">
+                                    <input type="text" name="college" id="college" class="form-control"
+                                        placeholder="College Name" required>
+                                </div>
 
-                                <h6>Choose Ticket Type</h6>
+                                <!-- JAAGO Registration Conditional -->
+                                <h6 class="mt-4 mb-3">Are you registered for JAAGO?</h6>
+                                <div class="radio-group-container">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="jaagoRegistered"
+                                            id="jaagoYes" value="Yes" required>
+                                        <label class="form-check-label text-light" for="jaagoYes">Yes</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="jaagoRegistered" id="jaagoNo"
+                                            value="No" required>
+                                        <label class="form-check-label text-light" for="jaagoNo">No</label>
+                                    </div>
+                                </div>
 
-                                <div class="row">
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <div class="form-check form-control">
-                                            <input class="form-check-input" type="radio" name="TicketForm"
-                                                id="flexRadioDefault1">
-                                            <label class="form-check-label" for="flexRadioDefault1">
-                                                Eary bird $120
-                                            </label>
+                                <!-- This div is shown conditionally -->
+                                <div id="jaagoDetails" class="p-3 mb-3 rounded"
+                                    style="display: none; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" name="paymentCompleted"
+                                            id="paymentCompleted">
+                                        <label class="form-check-label text-light" for="paymentCompleted">Payment
+                                            Done</label>
+                                    </div>
+
+                                    <h6 class="mb-3">Travel Confirmed?</h6>
+                                    <div class="radio-group-container">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="travelConfirmed"
+                                                id="travelYes" value="Yes">
+                                            <label class="form-check-label text-light" for="travelYes">Yes</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="travelConfirmed"
+                                                id="travelNo" value="No">
+                                            <label class="form-check-label text-light" for="travelNo">No</label>
                                         </div>
                                     </div>
-
-                                    <div class="col-lg-6 col-md-6 col-12">
-                                        <div class="form-check form-check-radio form-control">
-                                            <input class="form-check-input" type="radio" name="TicketForm"
-                                                id="flexRadioDefault2">
-                                            <label class="form-check-label" for="flexRadioDefault2">
-                                                Standard $240
-                                            </label>
-                                        </div>
-                                    </div>
                                 </div>
 
-                                <input type="number" name="ticket-form-number" id="ticket-form-number"
-                                    class="form-control" placeholder="Number of Tickets" required>
-
-                                <textarea name="ticket-form-message" rows="3" class="form-control"
-                                    id="ticket-form-message" placeholder="Additional Request"></textarea>
-
-                                <div class="col-lg-4 col-md-10 col-8 mx-auto">
-                                    <button type="submit" class="form-control">Register</button>
-                                </div>
+                                <button type="submit" class="btn btn-primary w-100 mt-4" id="submitBtn">
+                                    <span class="btn-text">Register Now</span>
+                                    <span class="spinner"></span>
+                                </button>
                             </div>
                         </form>
                     </div>
                 </div>
+            </div>
+
+            <!-- Custom Glassmorphism Pop-up Modal -->
+            <div id="popupModal" class="modal" style="display: none;">
+                <div class="modal-content">
+                    <h5 id="modalTitle" class="modal-title"></h5>
+                    <p id="modalMessage" class="modal-message"></p>
+                    <button id="modalCloseBtn" class="modal-close-btn">OK</button>
+                </div>
+            </div>
+
+            <!-- CSS for Glassmorphism, Responsiveness, and Loading Animation -->
+            <style>
+                .custom-form {
+                    background: rgba(255, 255, 255, 0.1);
+                    backdrop-filter: blur(10px);
+                    -webkit-backdrop-filter: blur(10px);
+                    border-radius: 15px;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+                    padding: 30px;
+                    color: #fff;
+                }
+
+                .custom-form h2,
+                .custom-form h6 {
+                    color: #ffffff;
+                }
+
+                .custom-form .form-control,
+                .custom-form .form-select {
+                    background: rgba(255, 255, 255, 0.15);
+                    border: 1px solid rgba(255, 255, 255, 0.3);
+                    color: #fff;
+                    border-radius: 8px;
+                }
+
+                .custom-form .form-control::placeholder {
+                    color: rgba(255, 255, 255, 0.7);
+                }
+
+                .custom-form .form-select {
+                    -webkit-appearance: none;
+                    -moz-appearance: none;
+                    appearance: none;
+                    background-image: none;
+                }
+
+                .custom-form .form-select option {
+                    background-color: #333;
+                    color: #fff;
+                }
+
+                .custom-form .form-control:focus,
+                .custom-form .form-select:focus {
+                    background: rgba(255, 255, 255, 0.25);
+                    border-color: rgba(255, 255, 255, 0.5);
+                    color: #fff;
+                    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.25);
+                }
+
+                .custom-form .form-label {
+                    font-weight: 500;
+                }
+
+                .radio-group-container {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 2rem;
+                    margin-bottom: 1rem;
+                }
+
+                .custom-form .form-check {
+                    display: flex;
+                    align-items: center;
+                    white-space: nowrap;
+                    padding-left: 0;
+                }
+
+                .custom-form .form-check-input {
+                    background-color: rgba(255, 255, 255, 0.2);
+                    border-color: rgba(255, 255, 255, 0.5);
+                    margin: 0;
+                    margin-right: 0.75rem;
+                    flex-shrink: 0;
+                }
+
+                .custom-form .form-check-input:checked {
+                    background-color: #0d6efd;
+                    border-color: #0d6efd;
+                }
+
+                .custom-form .form-check-label {
+                    cursor: pointer;
+                    margin-bottom: 0;
+                }
+
+                .btn-primary {
+                    background-color: #0d6efd;
+                    border-color: #0d6efd;
+                    font-weight: 600;
+                    padding: 12px;
+                    border-radius: 8px;
+                    position: relative;
+                    transition: all 0.3s ease;
+                }
+
+                .btn-primary .spinner {
+                    display: none;
+                    width: 20px;
+                    height: 20px;
+                    border: 3px solid rgba(255, 255, 255, 0.3);
+                    border-top: 3px solid #fff;
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                    margin-left: 10px;
+                }
+
+                .btn-primary.loading .btn-text {
+                    visibility: hidden;
+                }
+
+                .btn-primary.loading::after {
+                    content: 'Registering...';
+                    position: absolute;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    color: #fff;
+                }
+
+                .btn-primary.loading .spinner {
+                    display: inline-block;
+                    position: absolute;
+                    left: 15px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                }
+
+                .btn-primary.loading::after {
+                    padding-left: 25px;
+                }
+
+                @keyframes spin {
+                    0% {
+                        transform: translateY(-50%) rotate(0deg);
+                    }
+
+                    100% {
+                        transform: translateY(-50%) rotate(360deg);
+                    }
+                }
+
+                /* --- FINAL FIX: Ensuring White Text in Modal --- */
+                .modal {
+                    position: fixed;
+                    z-index: 10000;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    background-color: rgba(0, 0, 0, 0.7);
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                .modal-content {
+                    /* More solid background for better contrast */
+                    background: rgba(0, 0, 0, 0.85);
+                    backdrop-filter: blur(5px);
+                    -webkit-backdrop-filter: blur(5px);
+                    border-radius: 15px;
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+                    padding: 30px;
+                    max-width: 400px;
+                    text-align: center;
+                }
+
+                .modal-title {
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    margin-bottom: 15px;
+                    /* Explicitly setting text color to white */
+                    color: #ffffff !important;
+                }
+
+                .modal-message {
+                    font-size: 1rem;
+                    margin-bottom: 25px;
+                    /* Explicitly setting text color to white */
+                    color: #ffffff !important;
+                }
+
+                .modal-close-btn {
+                    background: #0d6efd;
+                    color: #fff;
+                    border: none;
+                    padding: 10px 20px;
+                    border-radius: 8px;
+                    font-weight: 600;
+                    cursor: pointer;
+                    transition: background 0.3s ease;
+                }
+
+                .modal-close-btn:hover {
+                    background: #0b5ed7;
+                }
+            </style>
+
+            <!-- Firebase SDK and JavaScript -->
+            <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+            <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+            <script>
+                // Your Firebase configuration
+                const firebaseConfig = {
+                    apiKey: "AIzaSyDMQBL2vo6Tk-NzmXAi35fPbkzf25BI5Rg",
+                    authDomain: "ponthiff.firebaseapp.com",
+                    databaseURL: "https://ponthiff-default-rtdb.asia-southeast1.firebasedatabase.app/",
+                    projectId: "ponthiff",
+                    storageBucket: "ponthiff.firebasestorage.app",
+                    messagingSenderId: "388474682243",
+                    appId: "1:388474682243:web:0ecbe481f1d69abf3714b6"
+                };
+
+                // Initialize Firebase
+                firebase.initializeApp(firebaseConfig);
+                const database = firebase.database();
+
+                // --- DOM Elements ---
+                const form = document.getElementById('registrationForm');
+                const submitBtn = document.getElementById('submitBtn');
+                const jaagoRadios = document.querySelectorAll('input[name="jaagoRegistered"]');
+                const jaagoDetailsDiv = document.getElementById('jaagoDetails');
+                const paymentCheckbox = document.getElementById('paymentCompleted');
+
+                // Modal Elements
+                const popupModal = document.getElementById('popupModal');
+                const modalTitle = document.getElementById('modalTitle');
+                const modalMessage = document.getElementById('modalMessage');
+                const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+                // --- Modal Functions ---
+                function showModal(title, message) {
+                    modalTitle.textContent = title;
+                    modalMessage.textContent = message;
+                    popupModal.style.display = 'flex';
+                }
+
+                function hideModal() {
+                    popupModal.style.display = 'none';
+                }
+
+                modalCloseBtn.addEventListener('click', hideModal);
+                window.addEventListener('click', (event) => {
+                    if (event.target === popupModal) {
+                        hideModal();
+                    }
+                });
+
+                // --- Conditional Logic for JAAGO Details ---
+                jaagoRadios.forEach(radio => {
+                    radio.addEventListener('change', () => {
+                        if (document.getElementById('jaagoYes').checked) {
+                            jaagoDetailsDiv.style.display = 'block';
+                            paymentCheckbox.setAttribute('required', '');
+                        } else {
+                            jaagoDetailsDiv.style.display = 'none';
+                            paymentCheckbox.removeAttribute('required');
+                            paymentCheckbox.checked = false;
+                            document.querySelector('input[name="travelConfirmed"]:checked')?.removeAttribute('checked');
+                        }
+                    });
+                });
+
+                // --- Form Submission and Validation ---
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    submitBtn.classList.add('loading');
+
+                    const fullName = document.getElementById('fullName').value.trim();
+                    const email = document.getElementById('email').value.trim();
+                    const phone = document.getElementById('phone').value.trim();
+                    const dob = document.getElementById('dob').value;
+                    const college = document.getElementById('college').value.trim();
+                    const gender = document.getElementById('gender').value;
+                    const jaagoRegistered = document.querySelector('input[name="jaagoRegistered"]:checked');
+
+                    if (!fullName || !email || !phone || !dob || !college || !gender || !jaagoRegistered) {
+                        showModal('Validation Error', 'Please fill in all required fields.');
+                        submitBtn.classList.remove('loading');
+                        return;
+                    }
+
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(email)) {
+                        showModal('Validation Error', 'Please enter a valid email address.');
+                        submitBtn.classList.remove('loading');
+                        return;
+                    }
+
+                    const phoneRegex = /^\d{10}$/;
+                    if (!phoneRegex.test(phone)) {
+                        showModal('Validation Error', 'Please enter a valid 10-digit phone number.');
+                        submitBtn.classList.remove('loading');
+                        return;
+                    }
+
+                    if (jaagoRegistered.value === 'Yes' && !paymentCheckbox.checked) {
+                        showModal('Validation Error', 'Please confirm that payment is completed.');
+                        submitBtn.classList.remove('loading');
+                        return;
+                    }
+
+                    const travelConfirmed = document.querySelector('input[name="travelConfirmed"]:checked');
+
+                    const formData = {
+                        fullName: fullName,
+                        email: email,
+                        phone: phone,
+                        dateOfBirth: dob,
+                        gender: gender,
+                        college: college,
+                        jaagoRegistered: jaagoRegistered.value,
+                        paymentCompleted: jaagoRegistered.value === 'Yes' ? paymentCheckbox.checked : 'N/A',
+                        travelConfirmed: jaagoRegistered.value === 'Yes' ? (travelConfirmed ? travelConfirmed.value : 'Not specified') : 'N/A',
+                        registeredAt: new Date().toISOString()
+                    };
+
+                    const newRegistrationRef = database.ref('eventRegistrations').push();
+                    newRegistrationRef.set(formData)
+                        .then(() => {
+                            showModal('🎉 Registration Successful!', 'Thank you for registering. We look forward to seeing you at the event!');
+                            form.reset();
+                            jaagoDetailsDiv.style.display = 'none';
+                        })
+                        .catch((error) => {
+                            console.error('Error submitting registration:', error);
+                            showModal('Submission Error', 'There was an error submitting your registration. Please try again.');
+                        })
+                        .finally(() => {
+                            submitBtn.classList.remove('loading');
+                        });
+                });
+            </script>
         </section>
     </main>
 
@@ -521,9 +905,9 @@ https://templatemo.com/tm-583-festava-live
                         <h5 class="site-footer-title mb-3">Location</h5>
 
                         <p class="text-white d-flex mt-3 mb-2">
-                            Darshana Retreat Centre, Pushpagiri, Thaliparamba, Kannur.</p>
+                            St. Joseph's School, Pushpagiri, Thaliparamba, Kannur.</p>
 
-                        <a class="link-fx-1 color-contrast-higher mt-3" href="https://maps.app.goo.gl/sHF4mt7mrYHGD5J37"
+                        <a class="link-fx-1 color-contrast-higher mt-3" href="https://maps.app.goo.gl/r8Z6tWzCtVFDLt3y7"
                             target="_blank">
                             <span>Our Maps</span>
                             <svg class="icon" viewBox="0 0 32 32" aria-hidden="true">
