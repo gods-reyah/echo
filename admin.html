@@ -1,0 +1,2335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+
+    <!-- CSS FILES -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100;200;400;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --primary-color: #0d6efd;
+            --secondary-color: #ff6600;
+            --dark-bg: #191919;
+            --light-bg: #2a2a2a;
+            --card-bg: #252525;
+            --text-light: #ffffff;
+            --text-muted: #a0a0a0;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+            --border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Initial Loader */
+        #initialLoader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--dark-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #initialLoader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loader-spinner {
+            width: 60px;
+            height: 60px;
+            border: 6px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 6px solid var(--secondary-color);
+            animation: spin 1s linear infinite;
+        }
+
+        /* Admin Navbar */
+        .admin-navbar {
+            background: rgba(25, 25, 25, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+            padding: 0.75rem 1.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .admin-brand img {
+            height: 40px;
+            width: auto;
+        }
+
+        /* Desktop Navigation */
+        .admin-nav {
+            display: none;
+            gap: 1rem;
+        }
+
+        .admin-nav-link {
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-nav-link:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+        }
+
+        .admin-nav-link.active {
+            background: var(--secondary-color);
+            color: var(--text-light);
+        }
+
+        /* Mobile Navigation Toggle (now on the right) */
+        .mobile-nav-toggle {
+            display: block;
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: relative;
+        }
+
+        /* Mobile Dropdown Menu */
+        .mobile-dropdown-menu {
+            position: absolute;
+            top: 100%;
+            right: 1.5rem;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+            z-index: 1001;
+            padding: 0.5rem 0;
+            border: 1px solid var(--border-color);
+        }
+
+        .mobile-dropdown-menu.show {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .mobile-dropdown-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .mobile-dropdown-item {
+            margin-bottom: 0;
+        }
+
+        .mobile-dropdown-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .mobile-dropdown-link:hover,
+        .mobile-dropdown-link.active {
+            background: var(--secondary-color);
+        }
+
+        /* Main Content Container */
+        .main-content {
+            padding: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            opacity: 0;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Dashboard Styles */
+        .dashboard-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .dashboard-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .dashboard-subtitle {
+            color: var(--text-muted);
+        }
+
+        /* Stats Cards */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+        }
+
+        .stat-card.jaago::before {
+            background: var(--secondary-color);
+        }
+
+        .stat-card.payment::before {
+            background: var(--success-color);
+        }
+
+        .stat-card.travel::before {
+            background: var(--warning-color);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-icon.total {
+            background-color: rgba(13, 110, 253, 0.2);
+            color: var(--primary-color);
+        }
+
+        .stat-icon.jaago {
+            background-color: rgba(255, 102, 0, 0.2);
+            color: var(--secondary-color);
+        }
+
+        .stat-icon.payment {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: var(--success-color);
+        }
+
+        .stat-icon.travel {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: var(--warning-color);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Data Table Styles */
+        .data-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .data-controls-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .search-container {
+            position: relative;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            border-radius: 30px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-light);
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            background: var(--light-bg);
+            border-color: var(--primary-color);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+            color: var(--text-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover {
+            background: var(--light-bg);
+        }
+
+        .filter-btn.active {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn .btn-text {
+            transition: opacity 0.3s ease;
+        }
+
+        .action-btn.loading .btn-text {
+            opacity: 0;
+        }
+
+        .action-btn::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 2px solid #fff;
+            animation: spin 1s linear infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .action-btn.loading::after {
+            opacity: 1;
+        }
+
+        .export-btn {
+            background-color: var(--success-color);
+        }
+
+        .export-btn:hover {
+            background-color: #218838;
+        }
+
+        .add-btn {
+            background-color: var(--primary-color);
+        }
+
+        .add-btn:hover {
+            background-color: #0b5ed7;
+        }
+
+        /* Scrollable data table */
+        .data-table-container {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            height: 70vh;
+            position: relative;
+        }
+
+        .data-table-wrapper {
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: auto;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th {
+            background: var(--light-bg);
+            padding: 1rem 0.75rem;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            white-space: nowrap;
+        }
+
+        .data-table td {
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .editable {
+            cursor: pointer;
+            position: relative;
+        }
+
+        .editable:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .edit-input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid var(--primary-color);
+            border-radius: 4px;
+            background: var(--light-bg);
+            color: var(--text-light);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .status-yes {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: var(--success-color);
+        }
+
+        .status-no {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: var(--danger-color);
+        }
+
+        .status-na {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: var(--warning-color);
+        }
+
+        .action-cell {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .action-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .edit-icon {
+            background-color: rgba(13, 110, 253, 0.2);
+            color: var(--primary-color);
+        }
+
+        .edit-icon:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .delete-icon {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: var(--danger-color);
+        }
+
+        .delete-icon:hover {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        /* Enhanced Analytics Styles */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        .analytics-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .chart-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            padding: 1.5rem;
+            height: 300px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: var(--primary-color);
+        }
+
+        .chart-card.gender::before {
+            background: var(--secondary-color);
+        }
+
+        .chart-card.jaago::before {
+            background: var(--success-color);
+        }
+
+        .chart-card.college::before {
+            background: var(--warning-color);
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        .chart-icon.trends {
+            background-color: rgba(13, 110, 253, 0.2);
+            color: var(--primary-color);
+        }
+
+        .chart-icon.gender {
+            background-color: rgba(255, 102, 0, 0.2);
+            color: var(--secondary-color);
+        }
+
+        .chart-icon.jaago {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: var(--success-color);
+        }
+
+        .chart-icon.college {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: var(--warning-color);
+        }
+
+        .chart-container {
+            height: calc(100% - 40px);
+            position: relative;
+        }
+
+        /* Analytics summary cards */
+        .analytics-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .summary-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .summary-icon.total {
+            background-color: rgba(13, 110, 253, 0.2);
+            color: var(--primary-color);
+        }
+
+        .summary-icon.jaago {
+            background-color: rgba(255, 102, 0, 0.2);
+            color: var(--secondary-color);
+        }
+
+        .summary-icon.payment {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: var(--success-color);
+        }
+
+        .summary-icon.travel {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: var(--warning-color);
+        }
+
+        .summary-content h5 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .summary-content p {
+            margin: 0;
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            border-radius: 15px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            margin: 5% auto;
+            padding: 2rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--light-bg);
+            color: var(--text-light);
+            outline: none;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            background: var(--light-bg);
+        }
+
+        .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: var(--light-bg);
+            color: var(--text-light);
+            outline: none;
+        }
+
+        .form-select option {
+            background-color: var(--dark-bg);
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-check-input {
+            width: 20px;
+            height: 20px;
+            background-color: var(--light-bg);
+            border: 1px solid var(--border-color);
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #0b5ed7;
+        }
+
+        .btn-secondary {
+            background-color: var(--light-bg);
+            color: var(--text-light);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--border-color);
+        }
+
+        /* Loading Spinner */
+        .spinner-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            border-top: 5px solid var(--primary-color);
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Toast Notification */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1001;
+        }
+
+        .toast {
+            background: var(--card-bg);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            min-width: 300px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .toast-success .toast-icon {
+            background-color: rgba(40, 167, 69, 0.2);
+            color: var(--success-color);
+        }
+
+        .toast-error .toast-icon {
+            background-color: rgba(220, 53, 69, 0.2);
+            color: var(--danger-color);
+        }
+
+        .toast-message {
+            flex-grow: 1;
+        }
+
+        .toast-title {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .toast-text {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        /* Responsive Styles */
+        @media (min-width: 768px) {
+            .admin-nav {
+                display: flex;
+            }
+
+            .mobile-nav-toggle {
+                display: none;
+            }
+
+            .data-controls {
+                flex-direction: row;
+                align-items: center;
+            }
+
+            .search-container {
+                width: 300px;
+            }
+
+            .analytics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics-row {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .main-content {
+                padding: 2rem;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .stats-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
+            .dashboard-title {
+                font-size: 1.5rem;
+            }
+
+            .data-table-container {
+                height: 60vh;
+            }
+
+            .data-table th,
+            .data-table td {
+                padding: 0.5rem;
+                font-size: 0.9rem;
+            }
+
+            .chart-card {
+                height: 250px;
+                padding: 1rem;
+            }
+
+            .chart-title {
+                font-size: 1rem;
+            }
+
+            .modal-content {
+                width: 95%;
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics-row {
+                grid-template-columns: 1fr;
+            }
+
+            .analytics-summary {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .action-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Initial Full Page Loader -->
+    <div id="initialLoader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- Admin Navbar -->
+    <nav class="admin-navbar">
+        <a href="#" class="admin-brand">
+            <img src="./images/Black.png" alt="Logo">
+            Echo Admin
+        </a>
+
+        <!-- Desktop Navigation -->
+        <div class="admin-nav">
+            <a href="#" class="admin-nav-link active" data-tab="dashboard">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            <a href="#" class="admin-nav-link" data-tab="registrations">
+                <i class="bi bi-people"></i> Registrations
+            </a>
+            <a href="#" class="admin-nav-link" data-tab="analytics">
+                <i class="bi bi-graph-up"></i> Analytics
+            </a>
+        </div>
+
+        <!-- Mobile Navigation Toggle (moved to the right) -->
+        <button class="mobile-nav-toggle" id="mobileNavToggle">
+            <i class="bi bi-list"></i>
+        </button>
+
+        <!-- Mobile Dropdown Menu -->
+        <div class="mobile-dropdown-menu" id="mobileDropdownMenu">
+            <ul class="mobile-dropdown-list">
+                <li class="mobile-dropdown-item">
+                    <a href="#" class="mobile-dropdown-link active" data-tab="dashboard">
+                        <i class="bi bi-speedometer2"></i> Dashboard
+                    </a>
+                </li>
+                <li class="mobile-dropdown-item">
+                    <a href="#" class="mobile-dropdown-link" data-tab="registrations">
+                        <i class="bi bi-people"></i> Registrations
+                    </a>
+                </li>
+                <li class="mobile-dropdown-item">
+                    <a href="#" class="mobile-dropdown-link" data-tab="analytics">
+                        <i class="bi bi-graph-up"></i> Analytics
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Registration Dashboard</h1>
+                <p class="dashboard-subtitle">Manage and view all event registrations</p>
+            </div>
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon total"><i class="bi bi-people-fill"></i></div>
+                    <div class="stat-value" id="totalRegistrations">0</div>
+                    <div class="stat-label">Total Registrations</div>
+                </div>
+                <div class="stat-card jaago">
+                    <div class="stat-icon jaago"><i class="bi bi-check-circle-fill"></i></div>
+                    <div class="stat-value" id="jaagoRegistrations">0</div>
+                    <div class="stat-label">JAAGO Registrations</div>
+                </div>
+                <div class="stat-card payment">
+                    <div class="stat-icon payment"><i class="bi bi-credit-card-fill"></i></div>
+                    <div class="stat-value" id="paymentCompleted">0</div>
+                    <div class="stat-label">Payment Completed</div>
+                </div>
+                <div class="stat-card travel">
+                    <div class="stat-icon travel"><i class="bi bi-airplane-fill"></i></div>
+                    <div class="stat-value" id="travelConfirmed">0</div>
+                    <div class="stat-label">Travel Confirmed</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registrations Tab -->
+        <div id="registrations" class="tab-content">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Registration Management</h1>
+                <p class="dashboard-subtitle">View, edit, and manage all event registrations</p>
+            </div>
+            <div class="data-controls">
+                <div class="data-controls-row">
+                    <div class="search-container">
+                        <i class="bi bi-search search-icon"></i>
+                        <input type="text" class="search-input" id="searchInput" placeholder="Search registrations...">
+                    </div>
+                    <div class="filter-container">
+                        <button class="filter-btn active" data-filter="all">All</button>
+                        <button class="filter-btn" data-filter="jaago">JAAGO</button>
+                        <button class="filter-btn" data-filter="payment">Payment</button>
+                        <button class="filter-btn" data-filter="travel">Travel</button>
+                    </div>
+                </div>
+                <div class="data-controls-row">
+                    <div class="action-buttons">
+                        <button class="action-btn export-btn" id="exportBtn">
+                            <span class="btn-text"><i class="bi bi-download"></i> Export</span>
+                        </button>
+                        <button class="action-btn add-btn" id="addBtn">
+                            <span class="btn-text"><i class="bi bi-plus-circle"></i> Add</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="data-table-container">
+                <div class="spinner-container" id="loadingSpinner">
+                    <div class="spinner"></div>
+                </div>
+                <div class="data-table-wrapper" id="dataTableWrapper" style="display: none;">
+                    <table class="data-table" id="dataTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>College</th>
+                                <th>Gender</th>
+                                <th>JAAGO</th>
+                                <th>Payment</th>
+                                <th>Travel</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Analytics Tab -->
+        <div id="analytics" class="tab-content">
+            <div class="dashboard-header">
+                <h1 class="dashboard-title">Registration Analytics</h1>
+                <p class="dashboard-subtitle">Visualize and analyze registration data</p>
+            </div>
+            <div class="analytics-summary">
+                <div class="summary-card">
+                    <div class="summary-icon total"><i class="bi bi-people-fill"></i></div>
+                    <div class="summary-content">
+                        <h5 id="analyticsTotal">0</h5>
+                        <p>Total Registrations</p>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon jaago"><i class="bi bi-check-circle-fill"></i></div>
+                    <div class="summary-content">
+                        <h5 id="analyticsJaago">0</h5>
+                        <p>JAAGO Registrations</p>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon payment"><i class="bi bi-credit-card-fill"></i></div>
+                    <div class="summary-content">
+                        <h5 id="analyticsPayment">0</h5>
+                        <p>Payment Completed</p>
+                    </div>
+                </div>
+                <div class="summary-card">
+                    <div class="summary-icon travel"><i class="bi bi-airplane-fill"></i></div>
+                    <div class="summary-content">
+                        <h5 id="analyticsTravel">0</h5>
+                        <p>Travel Confirmed</p>
+                    </div>
+                </div>
+            </div>
+            <div class="data-controls">
+                <div class="filter-container">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="jaago">JAAGO</button>
+                    <button class="filter-btn" data-filter="payment">Payment</button>
+                    <button class="filter-btn" data-filter="travel">Travel</button>
+                </div>
+            </div>
+            <div class="analytics-grid">
+                <div class="analytics-row">
+                    <div class="chart-card">
+                        <h5 class="chart-title">
+                            <div class="chart-icon trends"><i class="bi bi-graph-up"></i></div>
+                            Registration Trends
+                        </h5>
+                        <div class="chart-container"><canvas id="trendsChart"></canvas></div>
+                    </div>
+                    <div class="chart-card gender">
+                        <h5 class="chart-title">
+                            <div class="chart-icon gender"><i class="bi bi-gender-ambiguous"></i></div>
+                            Gender Distribution
+                        </h5>
+                        <div class="chart-container"><canvas id="genderChart"></canvas></div>
+                    </div>
+                </div>
+                <div class="analytics-row">
+                    <div class="chart-card jaago">
+                        <h5 class="chart-title">
+                            <div class="chart-icon jaago"><i class="bi bi-check-circle"></i></div>
+                            JAAGO Status
+                        </h5>
+                        <div class="chart-container"><canvas id="jaagoChart"></canvas></div>
+                    </div>
+                    <div class="chart-card college">
+                        <h5 class="chart-title">
+                            <div class="chart-icon college"><i class="bi bi-building"></i></div>
+                            Top 5 Colleges
+                        </h5>
+                        <div class="chart-container"><canvas id="collegeChart"></canvas></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Edit/Add Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle">Edit Registration</h2>
+                <button class="close-btn" id="closeModalBtn">&times;</button>
+            </div>
+            <form id="editForm">
+                <input type="hidden" id="editId">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group"><label for="editName" class="form-label">Full Name</label><input
+                                type="text" class="form-control" id="editName" required></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group"><label for="editEmail" class="form-label">Email</label><input
+                                type="email" class="form-control" id="editEmail" required></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group"><label for="editPhone" class="form-label">Phone</label><input type="tel"
+                                class="form-control" id="editPhone" pattern="[0-9]{10}" required></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group"><label for="editCollege" class="form-label">College</label><input
+                                type="text" class="form-control" id="editCollege" required></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group"><label for="editGender" class="form-label">Gender</label><select
+                                class="form-select" id="editGender" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group"><label for="editJaago" class="form-label">JAAGO
+                                Registered</label><select class="form-select" id="editJaago" required>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select></div>
+                    </div>
+                </div>
+                <div class="row" id="paymentTravelRow" style="display:none;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="form-check"><input class="form-check-input" type="checkbox"
+                                    id="editPayment"><label class="form-check-label" for="editPayment">Payment
+                                    Completed</label></div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group"><label for="editTravel" class="form-label">Travel
+                                Confirmed</label><select class="form-select" id="editTravel">
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select></div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" id="cancelBtn">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-container">
+        <div class="toast" id="toast">
+            <div class="toast-icon"><i class="bi bi-check-lg"></i></div>
+            <div class="toast-message">
+                <div class="toast-title" id="toastTitle">Success</div>
+                <div class="toast-text" id="toastText">Changes saved successfully</div>
+            </div>
+            <button class="toast-close" id="toastClose">&times;</button>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDMQBL2vo6Tk-NzmXAi35fPbkzf25BI5Rg",
+            authDomain: "ponthiff.firebaseapp.com",
+            databaseURL: "https://ponthiff-default-rtdb.asia-southeast1.firebasedatabase.app/",
+            projectId: "ponthiff",
+            storageBucket: "ponthiff.firebasestorage.app",
+            messagingSenderId: "388474682243",
+            appId: "1:388474682243:web:0ecbe481f1d69abf3714b6"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // DOM Elements
+        const initialLoader = document.getElementById('initialLoader');
+        const adminNavLinks = document.querySelectorAll('.admin-nav-link');
+        const mobileNavLinks = document.querySelectorAll('.mobile-dropdown-link');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const mobileNavToggle = document.getElementById('mobileNavToggle');
+        const mobileDropdownMenu = document.getElementById('mobileDropdownMenu');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const dataTableWrapper = document.getElementById('dataTableWrapper');
+        const dataTable = document.getElementById('dataTable');
+        const dataTableBody = document.getElementById('dataTableBody');
+        const searchInput = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const exportBtn = document.getElementById('exportBtn');
+        const addBtn = document.getElementById('addBtn');
+        const editModal = document.getElementById('editModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const editForm = document.getElementById('editForm');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const toast = document.getElementById('toast');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastText = document.getElementById('toastText');
+        const toastClose = document.getElementById('toastClose');
+        const editJaago = document.getElementById('editJaago');
+        const paymentTravelRow = document.getElementById('paymentTravelRow');
+
+        // Stats elements
+        const totalRegistrationsEl = document.getElementById('totalRegistrations');
+        const jaagoRegistrationsEl = document.getElementById('jaagoRegistrations');
+        const paymentCompletedEl = document.getElementById('paymentCompleted');
+        const travelConfirmedEl = document.getElementById('travelConfirmed');
+
+        // Analytics elements
+        const analyticsTotalEl = document.getElementById('analyticsTotal');
+        const analyticsJaagoEl = document.getElementById('analyticsJaago');
+        const analyticsPaymentEl = document.getElementById('analyticsPayment');
+        const analyticsTravelEl = document.getElementById('analyticsTravel');
+
+        // Data
+        let registrations = [];
+        let filteredRegistrations = [];
+        let currentFilter = 'all';
+        let editingId = null;
+        let charts = {};
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchRegistrations();
+            setupEventListeners();
+        });
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            // Desktop tab switching
+            adminNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetTab = link.getAttribute('data-tab');
+                    switchTab(targetTab);
+                });
+            });
+
+            // Mobile tab switching
+            mobileNavLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetTab = link.getAttribute('data-tab');
+                    switchTab(targetTab);
+                    closeMobileDropdown();
+                });
+            });
+
+            // Mobile dropdown toggle
+            mobileNavToggle.addEventListener('click', toggleMobileDropdown);
+
+            // Close mobile dropdown when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!mobileDropdownMenu.contains(e.target) && !mobileNavToggle.contains(e.target)) {
+                    closeMobileDropdown();
+                }
+            });
+
+            // Search
+            searchInput.addEventListener('input', handleSearch);
+
+            // Filters
+            filterBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active state for all filter buttons
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+
+                    currentFilter = btn.getAttribute('data-filter');
+                    applyFilter();
+                });
+            });
+
+            // Export
+            exportBtn.addEventListener('click', exportData);
+
+            // Add
+            addBtn.addEventListener('click', () => {
+                editingId = null;
+                modalTitle.textContent = 'Add Registration';
+                editForm.reset();
+                editModal.style.display = 'block';
+            });
+
+            // Modal
+            closeModalBtn.addEventListener('click', () => {
+                editModal.style.display = 'none';
+            });
+
+            cancelBtn.addEventListener('click', () => {
+                editModal.style.display = 'none';
+            });
+
+            // Form submission
+            editForm.addEventListener('submit', handleFormSubmit);
+
+            // Toast
+            toastClose.addEventListener('click', () => {
+                toast.classList.remove('show');
+            });
+
+            // JAAGO change
+            editJaago.addEventListener('change', () => {
+                if (editJaago.value === 'Yes') {
+                    paymentTravelRow.style.display = 'flex';
+                } else {
+                    paymentTravelRow.style.display = 'none';
+                }
+            });
+        }
+
+        // Tab switching function
+        function switchTab(targetTab) {
+            // Update active nav link for both desktop and mobile
+            adminNavLinks.forEach(link => {
+                if (link.getAttribute('data-tab') === targetTab) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            mobileNavLinks.forEach(link => {
+                if (link.getAttribute('data-tab') === targetTab) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+
+            // Show target tab content
+            tabContents.forEach(content => {
+                content.classList.remove('active');
+                if (content.id === targetTab) {
+                    content.classList.add('active');
+                }
+            });
+
+            // Initialize charts when analytics tab is opened
+            if (targetTab === 'analytics') {
+                setTimeout(() => {
+                    initCharts();
+                    Object.values(charts).forEach(chart => chart.resize());
+                }, 100);
+            }
+        }
+
+        // Mobile navigation functions
+        function toggleMobileDropdown() {
+            mobileDropdownMenu.classList.toggle('show');
+        }
+
+        function closeMobileDropdown() {
+            mobileDropdownMenu.classList.remove('show');
+        }
+
+        // Fetch registrations from Firebase
+        function fetchRegistrations() {
+            database.ref('eventRegistrations').once('value')
+                .then(snapshot => {
+                    const data = snapshot.val();
+                    registrations = [];
+
+                    if (data) {
+                        Object.keys(data).forEach(key => {
+                            registrations.push({
+                                id: key,
+                                ...data[key]
+                            });
+                        });
+                    }
+
+                    filteredRegistrations = [...registrations];
+                    updateStats();
+                    renderTable();
+                    // Hide initial loader after first data fetch
+                    initialLoader.classList.add('hidden');
+                })
+                .catch(error => {
+                    console.error('Error fetching registrations:', error);
+                    showToast('Error', 'Failed to fetch registrations', 'error');
+                    initialLoader.classList.add('hidden');
+                });
+        }
+
+        // Update statistics
+        function updateStats() {
+            const totalCount = registrations.length;
+            const jaagoCount = registrations.filter(reg => reg.jaagoRegistered === 'Yes').length;
+            const paymentCount = registrations.filter(reg =>
+                reg.jaagoRegistered === 'Yes' && reg.paymentCompleted === true
+            ).length;
+            const travelCount = registrations.filter(reg =>
+                reg.jaagoRegistered === 'Yes' && reg.travelConfirmed === 'Yes'
+            ).length;
+
+            // Update dashboard stats
+            totalRegistrationsEl.textContent = totalCount;
+            jaagoRegistrationsEl.textContent = jaagoCount;
+            paymentCompletedEl.textContent = paymentCount;
+            travelConfirmedEl.textContent = travelCount;
+
+            // Update analytics stats
+            analyticsTotalEl.textContent = totalCount;
+            analyticsJaagoEl.textContent = jaagoCount;
+            analyticsPaymentEl.textContent = paymentCount;
+            analyticsTravelEl.textContent = travelCount;
+        }
+
+        // Initialize charts
+        function initCharts() {
+            const chartFontColor = '#a0a0a0';
+            const gridColor = 'rgba(255, 255, 255, 0.1)';
+
+            // Destroy existing charts
+            Object.values(charts).forEach(chart => chart.destroy());
+            charts = {};
+
+            // 1. Registration Trends
+            const trendsData = {};
+            filteredRegistrations.forEach(reg => {
+                const date = new Date(reg.registeredAt).toLocaleDateString();
+                trendsData[date] = (trendsData[date] || 0) + 1;
+            });
+
+            charts.trends = new Chart(document.getElementById('trendsChart'), {
+                type: 'line',
+                data: {
+                    labels: Object.keys(trendsData),
+                    datasets: [{
+                        label: 'Registrations',
+                        data: Object.values(trendsData),
+                        borderColor: '#0d6efd',
+                        backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: chartFontColor
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            ticks: {
+                                color: chartFontColor
+                            },
+                            grid: {
+                                color: gridColor
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: chartFontColor
+                            },
+                            grid: {
+                                color: gridColor
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 2. Gender Distribution
+            const genderData = {
+                Male: 0,
+                Female: 0
+            };
+            filteredRegistrations.forEach(reg => {
+                if (reg.gender) genderData[reg.gender]++;
+            });
+
+            charts.gender = new Chart(document.getElementById('genderChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(genderData),
+                    datasets: [{
+                        data: Object.values(genderData),
+                        backgroundColor: ['#0d6efd', '#ff6600']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: chartFontColor
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 3. JAAGO Status
+            const jaagoData = {
+                'Yes': 0,
+                'No': 0
+            };
+            filteredRegistrations.forEach(reg => {
+                if (reg.jaagoRegistered) jaagoData[reg.jaagoRegistered]++;
+            });
+
+            charts.jaago = new Chart(document.getElementById('jaagoChart'), {
+                type: 'pie',
+                data: {
+                    labels: Object.keys(jaagoData),
+                    datasets: [{
+                        data: Object.values(jaagoData),
+                        backgroundColor: ['#28a745', '#dc3545']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: chartFontColor
+                            }
+                        }
+                    }
+                }
+            });
+
+            // 4. Top Colleges
+            const collegeData = {};
+            filteredRegistrations.forEach(reg => {
+                collegeData[reg.college] = (collegeData[reg.college] || 0) + 1;
+            });
+            const sortedColleges = Object.entries(collegeData)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 5);
+
+            charts.college = new Chart(document.getElementById('collegeChart'), {
+                type: 'bar',
+                data: {
+                    labels: sortedColleges.map(c => c[0]),
+                    datasets: [{
+                        label: 'Registrations',
+                        data: sortedColleges.map(c => c[1]),
+                        backgroundColor: '#ff6600'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: chartFontColor
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                color: chartFontColor
+                            },
+                            grid: {
+                                color: gridColor
+                            }
+                        },
+                        y: {
+                            ticks: {
+                                color: chartFontColor
+                            },
+                            grid: {
+                                color: gridColor
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Render table
+        function renderTable() {
+            if (filteredRegistrations.length === 0) {
+                dataTableBody.innerHTML = '<tr><td colspan="10" class="text-center">No registrations found</td></tr>';
+            } else {
+                dataTableBody.innerHTML = '';
+
+                filteredRegistrations.forEach(registration => {
+                    const row = document.createElement('tr');
+                    row.setAttribute('data-id', registration.id);
+
+                    row.innerHTML = `
+                        <td>${registration.id.substring(0, 8)}</td>
+                        <td class="editable" data-field="fullName">${registration.fullName}</td>
+                        <td class="editable" data-field="email">${registration.email}</td>
+                        <td class="editable" data-field="phone">${registration.phone}</td>
+                        <td class="editable" data-field="college">${registration.college}</td>
+                        <td class="editable" data-field="gender">${registration.gender}</td>
+                        <td class="editable" data-field="jaagoRegistered">
+                            <span class="status-badge ${registration.jaagoRegistered === 'Yes' ? 'status-yes' : 'status-no'}">
+                                ${registration.jaagoRegistered}
+                            </span>
+                        </td>
+                        <td class="editable" data-field="paymentCompleted">
+                            <span class="status-badge ${registration.paymentCompleted === true ? 'status-yes' : registration.paymentCompleted === false ? 'status-no' : 'status-na'}">
+                                ${registration.paymentCompleted === true ? 'Yes' : registration.paymentCompleted === false ? 'No' : 'N/A'}
+                            </span>
+                        </td>
+                        <td class="editable" data-field="travelConfirmed">
+                            <span class="status-badge ${registration.travelConfirmed === 'Yes' ? 'status-yes' : registration.travelConfirmed === 'No' ? 'status-no' : 'status-na'}">
+                                ${registration.travelConfirmed}
+                            </span>
+                        </td>
+                        <td>
+                            <div class="action-cell">
+                                <div class="action-icon edit-icon" data-id="${registration.id}">
+                                    <i class="bi bi-pencil"></i>
+                                </div>
+                                <div class="action-icon delete-icon" data-id="${registration.id}">
+                                    <i class="bi bi-trash"></i>
+                                </div>
+                            </div>
+                        </td>
+                    `;
+
+                    dataTableBody.appendChild(row);
+                });
+
+                // Add event listeners to action icons
+                document.querySelectorAll('.edit-icon').forEach(icon => {
+                    icon.addEventListener('click', () => {
+                        const id = icon.getAttribute('data-id');
+                        openEditModal(id);
+                    });
+                });
+
+                document.querySelectorAll('.delete-icon').forEach(icon => {
+                    icon.addEventListener('click', () => {
+                        const id = icon.getAttribute('data-id');
+                        deleteRegistration(id);
+                    });
+                });
+
+                // Add event listeners to editable cells
+                document.querySelectorAll('.editable').forEach(cell => {
+                    cell.addEventListener('click', () => {
+                        makeEditable(cell);
+                    });
+                });
+            }
+
+            // Hide loading spinner and show table
+            loadingSpinner.style.display = 'none';
+            dataTableWrapper.style.display = 'block';
+        }
+
+        // Make cell editable
+        function makeEditable(cell) {
+            const field = cell.getAttribute('data-field');
+            const value = cell.textContent.trim();
+
+            // Create input element
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'edit-input';
+            input.value = value;
+
+            // Handle special cases for certain fields
+            if (field === 'jaagoRegistered') {
+                const select = document.createElement('select');
+                select.className = 'edit-input';
+
+                const yesOption = document.createElement('option');
+                yesOption.value = 'Yes';
+                yesOption.textContent = 'Yes';
+
+                const noOption = document.createElement('option');
+                noOption.value = 'No';
+                noOption.textContent = 'No';
+
+                select.appendChild(yesOption);
+                select.appendChild(noOption);
+
+                select.value = value;
+
+                cell.innerHTML = '';
+                cell.appendChild(select);
+                select.focus();
+
+                select.addEventListener('blur', () => {
+                    saveInlineEdit(cell, field, select.value);
+                });
+
+                select.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        saveInlineEdit(cell, field, select.value);
+                    } else if (e.key === 'Escape') {
+                        renderTable();
+                    }
+                });
+
+                return;
+            }
+
+            if (field === 'paymentCompleted') {
+                const select = document.createElement('select');
+                select.className = 'edit-input';
+
+                const yesOption = document.createElement('option');
+                yesOption.value = 'Yes';
+                yesOption.textContent = 'Yes';
+
+                const noOption = document.createElement('option');
+                noOption.value = 'No';
+                noOption.textContent = 'No';
+
+                const naOption = document.createElement('option');
+                naOption.value = 'N/A';
+                naOption.textContent = 'N/A';
+
+                select.appendChild(yesOption);
+                select.appendChild(noOption);
+                select.appendChild(naOption);
+
+                select.value = value;
+
+                cell.innerHTML = '';
+                cell.appendChild(select);
+                select.focus();
+
+                select.addEventListener('blur', () => {
+                    saveInlineEdit(cell, field, select.value);
+                });
+
+                select.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        saveInlineEdit(cell, field, select.value);
+                    } else if (e.key === 'Escape') {
+                        renderTable();
+                    }
+                });
+
+                return;
+            }
+
+            if (field === 'travelConfirmed') {
+                const select = document.createElement('select');
+                select.className = 'edit-input';
+
+                const yesOption = document.createElement('option');
+                yesOption.value = 'Yes';
+                yesOption.textContent = 'Yes';
+
+                const noOption = document.createElement('option');
+                noOption.value = 'No';
+                noOption.textContent = 'No';
+
+                const naOption = document.createElement('option');
+                naOption.value = 'N/A';
+                naOption.textContent = 'N/A';
+
+                select.appendChild(yesOption);
+                select.appendChild(noOption);
+                select.appendChild(naOption);
+
+                select.value = value;
+
+                cell.innerHTML = '';
+                cell.appendChild(select);
+                select.focus();
+
+                select.addEventListener('blur', () => {
+                    saveInlineEdit(cell, field, select.value);
+                });
+
+                select.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        saveInlineEdit(cell, field, select.value);
+                    } else if (e.key === 'Escape') {
+                        renderTable();
+                    }
+                });
+
+                return;
+            }
+
+            if (field === 'gender') {
+                const select = document.createElement('select');
+                select.className = 'edit-input';
+
+                const maleOption = document.createElement('option');
+                maleOption.value = 'Male';
+                maleOption.textContent = 'Male';
+
+                const femaleOption = document.createElement('option');
+                femaleOption.value = 'Female';
+                femaleOption.textContent = 'Female';
+
+                select.appendChild(maleOption);
+                select.appendChild(femaleOption);
+
+                select.value = value;
+
+                cell.innerHTML = '';
+                cell.appendChild(select);
+                select.focus();
+
+                select.addEventListener('blur', () => {
+                    saveInlineEdit(cell, field, select.value);
+                });
+
+                select.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') {
+                        saveInlineEdit(cell, field, select.value);
+                    } else if (e.key === 'Escape') {
+                        renderTable();
+                    }
+                });
+
+                return;
+            }
+
+            // Regular text input
+            cell.innerHTML = '';
+            cell.appendChild(input);
+            input.focus();
+            input.select();
+
+            input.addEventListener('blur', () => {
+                saveInlineEdit(cell, field, input.value);
+            });
+
+            input.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    saveInlineEdit(cell, field, input.value);
+                } else if (e.key === 'Escape') {
+                    renderTable();
+                }
+            });
+        }
+
+        // Save inline edit
+        function saveInlineEdit(cell, field, value) {
+            const row = cell.closest('tr');
+            const id = row.getAttribute('data-id');
+
+            // Convert string values to proper types
+            if (field === 'paymentCompleted') {
+                value = value === 'Yes' ? true : value === 'No' ? false : 'N/A';
+            }
+
+            // Update in database
+            database.ref(`eventRegistrations/${id}`).update({
+                [field]: value
+            })
+                .then(() => {
+                    // Update local data
+                    const index = registrations.findIndex(reg => reg.id === id);
+                    if (index !== -1) {
+                        registrations[index][field] = value;
+                    }
+
+                    // Re-render table
+                    renderTable();
+                    showToast('Success', 'Field updated successfully', 'success');
+                })
+                .catch(error => {
+                    console.error('Error updating field:', error);
+                    showToast('Error', 'Failed to update field', 'error');
+                    renderTable();
+                });
+        }
+
+        // Open edit modal
+        function openEditModal(id) {
+            const registration = registrations.find(reg => reg.id === id);
+
+            if (registration) {
+                editingId = id;
+                modalTitle.textContent = 'Edit Registration';
+
+                // Populate form
+                document.getElementById('editName').value = registration.fullName;
+                document.getElementById('editEmail').value = registration.email;
+                document.getElementById('editPhone').value = registration.phone;
+                document.getElementById('editCollege').value = registration.college;
+                document.getElementById('editGender').value = registration.gender;
+                document.getElementById('editJaago').value = registration.jaagoRegistered;
+
+                if (registration.jaagoRegistered === 'Yes') {
+                    paymentTravelRow.style.display = 'flex';
+                    document.getElementById('editPayment').checked = registration.paymentCompleted === true;
+                    document.getElementById('editTravel').value = registration.travelConfirmed || 'Not specified';
+                } else {
+                    paymentTravelRow.style.display = 'none';
+                }
+
+                editModal.style.display = 'block';
+            }
+        }
+
+        // Handle form submission
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const formData = {
+                fullName: document.getElementById('editName').value,
+                email: document.getElementById('editEmail').value,
+                phone: document.getElementById('editPhone').value,
+                college: document.getElementById('editCollege').value,
+                gender: document.getElementById('editGender').value,
+                jaagoRegistered: document.getElementById('editJaago').value,
+                paymentCompleted: document.getElementById('editJaago').value === 'Yes' ?
+                    document.getElementById('editPayment').checked : 'N/A',
+                travelConfirmed: document.getElementById('editJaago').value === 'Yes' ?
+                    document.getElementById('editTravel').value : 'N/A'
+            };
+
+            if (editingId) {
+                // Update existing registration
+                database.ref(`eventRegistrations/${editingId}`).update(formData)
+                    .then(() => {
+                        // Update local data
+                        const index = registrations.findIndex(reg => reg.id === editingId);
+                        if (index !== -1) {
+                            registrations[index] = {
+                                id: editingId,
+                                ...formData
+                            };
+                        }
+
+                        // Re-render table
+                        applyFilter();
+                        editModal.style.display = 'none';
+                        showToast('Success', 'Registration updated successfully', 'success');
+                    })
+                    .catch(error => {
+                        console.error('Error updating registration:', error);
+                        showToast('Error', 'Failed to update registration', 'error');
+                    });
+            } else {
+                // Add new registration
+                const newRegistrationRef = database.ref('eventRegistrations').push();
+                newRegistrationRef.set({
+                    ...formData,
+                    registeredAt: new Date().toISOString()
+                })
+                    .then(() => {
+                        // Add to local data
+                        registrations.push({
+                            id: newRegistrationRef.key,
+                            ...formData,
+                            registeredAt: new Date().toISOString()
+                        });
+
+                        // Re-render table
+                        applyFilter();
+                        editModal.style.display = 'none';
+                        showToast('Success', 'Registration added successfully', 'success');
+                    })
+                    .catch(error => {
+                        console.error('Error adding registration:', error);
+                        showToast('Error', 'Failed to add registration', 'error');
+                    });
+            }
+        }
+
+        // Delete registration
+        function deleteRegistration(id) {
+            if (confirm('Are you sure you want to delete this registration?')) {
+                database.ref(`eventRegistrations/${id}`).remove()
+                    .then(() => {
+                        // Remove from local data
+                        registrations = registrations.filter(reg => reg.id !== id);
+
+                        // Re-render table
+                        applyFilter();
+                        showToast('Success', 'Registration deleted successfully', 'success');
+                    })
+                    .catch(error => {
+                        console.error('Error deleting registration:', error);
+                        showToast('Error', 'Failed to delete registration', 'error');
+                    });
+            }
+        }
+
+        // Handle search
+        function handleSearch() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+
+            if (searchTerm === '') {
+                applyFilter();
+            } else {
+                filteredRegistrations = registrations.filter(registration => {
+                    return registration.fullName.toLowerCase().includes(searchTerm) ||
+                        registration.email.toLowerCase().includes(searchTerm) ||
+                        registration.phone.includes(searchTerm) ||
+                        registration.college.toLowerCase().includes(searchTerm) ||
+                        registration.gender.toLowerCase().includes(searchTerm) ||
+                        registration.jaagoRegistered.toLowerCase().includes(searchTerm) ||
+                        (registration.paymentCompleted === true ? 'Yes' :
+                            registration.paymentCompleted === false ? 'No' : 'N/A').toLowerCase().includes(searchTerm) ||
+                        registration.travelConfirmed.toLowerCase().includes(searchTerm);
+                });
+
+                renderTable();
+            }
+        }
+
+        // Apply filter
+        function applyFilter() {
+            switch (currentFilter) {
+                case 'all':
+                    filteredRegistrations = [...registrations];
+                    break;
+                case 'jaago':
+                    filteredRegistrations = registrations.filter(reg => reg.jaagoRegistered === 'Yes');
+                    break;
+                case 'payment':
+                    filteredRegistrations = registrations.filter(reg =>
+                        reg.jaagoRegistered === 'Yes' && reg.paymentCompleted === true
+                    );
+                    break;
+                case 'travel':
+                    filteredRegistrations = registrations.filter(reg =>
+                        reg.jaagoRegistered === 'Yes' && reg.travelConfirmed === 'Yes'
+                    );
+                    break;
+            }
+
+            renderTable();
+            updateStats();
+
+            // Update charts if analytics tab is active
+            if (document.getElementById('analytics').classList.contains('active')) {
+                initCharts();
+            }
+        }
+
+        // Export data
+        function exportData() {
+            // Set button to loading state
+            setButtonLoading(exportBtn, true);
+
+            // Create CSV content
+            const headers = ['ID', 'Name', 'Email', 'Phone', 'College', 'Gender', 'JAAGO', 'Payment', 'Travel', 'Registered At'];
+            const rows = filteredRegistrations.map(registration => [
+                registration.id,
+                registration.fullName,
+                registration.email,
+                registration.phone,
+                registration.college,
+                registration.gender,
+                registration.jaagoRegistered,
+                registration.paymentCompleted === true ? 'Yes' :
+                    registration.paymentCompleted === false ? 'No' : 'N/A',
+                registration.travelConfirmed,
+                registration.registeredAt
+            ]);
+
+            let csvContent = headers.join(',') + '\n';
+            rows.forEach(row => {
+                csvContent += row.join(',') + '\n';
+            });
+
+            // Create download link
+            const blob = new Blob([csvContent], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = `registrations_${new Date().toISOString().slice(0, 10)}.csv`;
+            downloadLink.click();
+
+            // Reset button state after a short delay
+            setTimeout(() => {
+                setButtonLoading(exportBtn, false);
+                showToast('Success', 'Data exported successfully', 'success');
+            }, 1500);
+        }
+
+        // Show toast notification
+        function showToast(title, message, type = 'success') {
+            toastTitle.textContent = title;
+            toastText.textContent = message;
+
+            // Update toast icon and class based on type
+            const toastIcon = toast.querySelector('.toast-icon i');
+
+            if (type === 'success') {
+                toast.className = 'toast toast-success';
+                toastIcon.className = 'bi bi-check-lg';
+            } else if (type === 'error') {
+                toast.className = 'toast toast-error';
+                toastIcon.className = 'bi bi-x-lg';
+            }
+
+            // Show toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100);
+
+            // Hide toast after 3 seconds
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Set button loading state
+        function setButtonLoading(button, isLoading) {
+            if (isLoading) {
+                button.classList.add('loading');
+                button.disabled = true;
+            } else {
+                button.classList.remove('loading');
+                button.disabled = false;
+            }
+        }
+    </script>
+</body>
+
+</html>
