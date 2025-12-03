@@ -8,7 +8,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Registration Echo</title>
+    <title>Registration- Ponthiff</title>
 
     <!-- CSS FILES -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -451,6 +451,75 @@ https://templatemo.com/tm-583-festava-live
                                         placeholder="College Name" required>
                                 </div>
 
+                                <!-- Address Section -->
+                                <div class="address-section mt-4 p-3 rounded"
+                                    style="background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);">
+                                    <h5 class="mb-3">Address Details</h5>
+
+                                    <!-- House Name/Number -->
+                                    <div class="mb-3">
+                                        <input type="text" name="houseName" id="houseName" class="form-control"
+                                            placeholder="House Name" required>
+                                    </div>
+
+                                    <!-- Pin Code -->
+                                    <div class="mb-3">
+                                        <input type="text" name="pinCode" id="pinCode" class="form-control"
+                                            placeholder="Pin Code" pattern="[0-9]{3}\s?[0-9]{3}"
+                                            title="Please enter a valid 6-digit pin code" required>
+                                    </div>
+
+                                    <!-- State -->
+                                    <div class="mb-3">
+                                        <label for="state" class="form-label text-light">State</label>
+                                        <select name="state" id="state" class="form-select" required>
+                                            <option value="Kerala" selected>Kerala</option>
+                                            <option value="Other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Other State Input (Hidden by default) -->
+                                    <div class="mb-3" id="otherStateDiv" style="display: none;">
+                                        <input type="text" name="otherState" id="otherState" class="form-control"
+                                            placeholder="Enter State Name">
+                                    </div>
+
+                                    <!-- District -->
+                                    <div class="mb-3">
+                                        <label for="district" class="form-label text-light">District</label>
+                                        <select name="district" id="district" class="form-select" required>
+                                            <option value="" disabled selected>Select District</option>
+                                            <option value="Thiruvananthapuram">Thiruvananthapuram</option>
+                                            <option value="Kollam">Kollam</option>
+                                            <option value="Pathanamthitta">Pathanamthitta</option>
+                                            <option value="Alappuzha">Alappuzha</option>
+                                            <option value="Kottayam">Kottayam</option>
+                                            <option value="Idukki">Idukki</option>
+                                            <option value="Ernakulam">Ernakulam</option>
+                                            <option value="Thrissur">Thrissur</option>
+                                            <option value="Palakkad">Palakkad</option>
+                                            <option value="Malappuram">Malappuram</option>
+                                            <option value="Kozhikode">Kozhikode</option>
+                                            <option value="Wayanad">Wayanad</option>
+                                            <option value="Kannur" selected>Kannur</option>
+                                            <option value="Kasaragod">Kasaragod</option>
+                                        </select>
+                                    </div>
+
+                                    <!-- Other District Input (Hidden by default) -->
+                                    <div class="mb-3" id="otherDistrictDiv" style="display: none;">
+                                        <input type="text" name="otherDistrict" id="otherDistrict" class="form-control"
+                                            placeholder="Enter District Name">
+                                    </div>
+
+                                    <!-- City/Town -->
+                                    <div class="mb-3">
+                                        <label for="city" class="form-label text-light">City/Town</label>
+                                        <input type="text" name="city" id="city" class="form-control"
+                                            placeholder="Enter City/Town Name" required>
+                                    </div>
+                                </div>
+
                                 <!-- JAAGO Registration Conditional -->
                                 <h6 class="mt-4 mb-3">Are you registered for JAAGO?</h6>
                                 <div class="radio-group-container">
@@ -524,6 +593,7 @@ https://templatemo.com/tm-583-festava-live
                 }
 
                 .custom-form h2,
+                .custom-form h5,
                 .custom-form h6 {
                     color: #ffffff;
                 }
@@ -562,6 +632,10 @@ https://templatemo.com/tm-583-festava-live
 
                 .custom-form .form-label {
                     font-weight: 500;
+                }
+
+                .address-section {
+                    margin-top: 1rem;
                 }
 
                 .radio-group-container {
@@ -737,6 +811,16 @@ https://templatemo.com/tm-583-festava-live
                 const jaagoDetailsDiv = document.getElementById('jaagoDetails');
                 const paymentCheckbox = document.getElementById('paymentCompleted');
 
+                // Address Elements
+                const stateSelect = document.getElementById('state');
+                const otherStateDiv = document.getElementById('otherStateDiv');
+                const otherStateInput = document.getElementById('otherState');
+                const districtSelect = document.getElementById('district');
+                const otherDistrictDiv = document.getElementById('otherDistrictDiv');
+                const otherDistrictInput = document.getElementById('otherDistrict');
+                const cityInput = document.getElementById('city');
+                const pinCodeInput = document.getElementById('pinCode');
+
                 // Modal Elements
                 const popupModal = document.getElementById('popupModal');
                 const modalTitle = document.getElementById('modalTitle');
@@ -759,6 +843,45 @@ https://templatemo.com/tm-583-festava-live
                     if (event.target === popupModal) {
                         hideModal();
                     }
+                });
+
+                // --- Address Field Logic ---
+                // Handle state selection
+                stateSelect.addEventListener('change', () => {
+                    if (stateSelect.value === 'Other') {
+                        otherStateDiv.style.display = 'block';
+                        otherStateInput.setAttribute('required', '');
+
+                        // Show other district input and hide Kerala districts
+                        districtSelect.style.display = 'none';
+                        districtSelect.removeAttribute('required');
+                        otherDistrictDiv.style.display = 'block';
+                        otherDistrictInput.setAttribute('required', '');
+                    } else {
+                        otherStateDiv.style.display = 'none';
+                        otherStateInput.removeAttribute('required');
+                        otherStateInput.value = '';
+
+                        // Show Kerala districts and hide other district input
+                        districtSelect.style.display = 'block';
+                        districtSelect.setAttribute('required', '');
+                        otherDistrictDiv.style.display = 'none';
+                        otherDistrictInput.removeAttribute('required');
+                        otherDistrictInput.value = '';
+                    }
+                });
+
+                // --- Pincode Validation ---
+                pinCodeInput.addEventListener('input', (e) => {
+                    // Remove any non-digit characters
+                    let value = e.target.value.replace(/\D/g, '');
+
+                    // Format as XXX XXX (with space in the middle)
+                    if (value.length > 3) {
+                        value = value.substring(0, 3) + ' ' + value.substring(3, 6);
+                    }
+
+                    e.target.value = value;
                 });
 
                 // --- Conditional Logic for JAAGO Details ---
@@ -789,8 +912,37 @@ https://templatemo.com/tm-583-festava-live
                     const gender = document.getElementById('gender').value;
                     const jaagoRegistered = document.querySelector('input[name="jaagoRegistered"]:checked');
 
+                    // Address fields
+                    const houseName = document.getElementById('houseName').value.trim();
+                    const pinCode = document.getElementById('pinCode').value.trim();
+                    const state = stateSelect.value;
+                    const otherState = otherStateInput.value.trim();
+                    const district = districtSelect.value;
+                    const otherDistrict = otherDistrictInput.value.trim();
+                    const city = cityInput.value.trim();
+
                     if (!fullName || !email || !phone || !dob || !college || !gender || !jaagoRegistered) {
                         showModal('Validation Error', 'Please fill in all required fields.');
+                        submitBtn.classList.remove('loading');
+                        return;
+                    }
+
+                    // Validate address fields
+                    if (!houseName || !pinCode || !city) {
+                        showModal('Validation Error', 'Please fill in all address fields.');
+                        submitBtn.classList.remove('loading');
+                        return;
+                    }
+
+                    // Validate state and district
+                    if (state === 'Other' && !otherState) {
+                        showModal('Validation Error', 'Please enter the state name.');
+                        submitBtn.classList.remove('loading');
+                        return;
+                    }
+
+                    if ((state === 'Kerala' && !district) || (state === 'Other' && !otherDistrict)) {
+                        showModal('Validation Error', 'Please select/enter the district.');
                         submitBtn.classList.remove('loading');
                         return;
                     }
@@ -809,6 +961,14 @@ https://templatemo.com/tm-583-festava-live
                         return;
                     }
 
+                    // Validate pincode (remove space and check if it's 6 digits)
+                    const pinCodeDigits = pinCode.replace(/\s/g, '');
+                    if (pinCodeDigits.length !== 6) {
+                        showModal('Validation Error', 'Please enter a valid 6-digit pin code.');
+                        submitBtn.classList.remove('loading');
+                        return;
+                    }
+
                     if (jaagoRegistered.value === 'Yes' && !paymentCheckbox.checked) {
                         showModal('Validation Error', 'Please confirm that payment is completed.');
                         submitBtn.classList.remove('loading');
@@ -817,6 +977,15 @@ https://templatemo.com/tm-583-festava-live
 
                     const travelConfirmed = document.querySelector('input[name="travelConfirmed"]:checked');
 
+                    // Create address object
+                    const address = {
+                        houseName: houseName,
+                        pinCode: pinCode,
+                        state: state === 'Other' ? otherState : state,
+                        district: state === 'Kerala' ? district : otherDistrict,
+                        city: city
+                    };
+
                     const formData = {
                         fullName: fullName,
                         email: email,
@@ -824,6 +993,7 @@ https://templatemo.com/tm-583-festava-live
                         dateOfBirth: dob,
                         gender: gender,
                         college: college,
+                        address: address,
                         jaagoRegistered: jaagoRegistered.value,
                         paymentCompleted: jaagoRegistered.value === 'Yes' ? paymentCheckbox.checked : 'N/A',
                         travelConfirmed: jaagoRegistered.value === 'Yes' ? (travelConfirmed ? travelConfirmed.value : 'Not specified') : 'N/A',
@@ -836,6 +1006,11 @@ https://templatemo.com/tm-583-festava-live
                             showModal('🎉 Registration Successful!', 'Thank you for registering. We look forward to seeing you at the event!');
                             form.reset();
                             jaagoDetailsDiv.style.display = 'none';
+
+                            // Reset address fields
+                            otherStateDiv.style.display = 'none';
+                            otherDistrictDiv.style.display = 'none';
+                            districtSelect.style.display = 'block';
                         })
                         .catch((error) => {
                             console.error('Error submitting registration:', error);
@@ -969,5 +1144,3 @@ T e m p l a t e M o
 </body>
 
 </html>
-
-
