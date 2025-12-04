@@ -578,6 +578,17 @@
             color: white;
         }
 
+        /* Address display styles */
+        .address-display {
+            max-width: 200px;
+            white-space: normal;
+        }
+
+        .address-line {
+            display: block;
+            font-size: 0.85rem;
+        }
+
         /* Enhanced Analytics Styles */
         .analytics-grid {
             display: grid;
@@ -1182,12 +1193,13 @@
                     <table class="data-table" id="dataTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>Sl. No</th>
                                 <th>Name</th>
-                                <th>Email</th>
                                 <th>Phone</th>
-                                <th>College</th>
                                 <th>Gender</th>
+                                <th>Email</th>
+                                <th>College</th>
+                                <th>Address</th>
                                 <th>JAAGO</th>
                                 <th>Payment</th>
                                 <th>Travel</th>
@@ -1326,6 +1338,41 @@
                             </select></div>
                     </div>
                 </div>
+
+                <!-- Address Fields -->
+                <div class="row">
+                    <div class="col-12">
+                        <h5 class="mb-3">Address Details</h5>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group"><label for="editHouseName" class="form-label">House Name</label><input
+                                type="text" class="form-control" id="editHouseName" required></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group"><label for="editCity" class="form-label">Town/City</label><input
+                                type="text" class="form-control" id="editCity" required></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group"><label for="editDistrict" class="form-label">District</label><input
+                                type="text" class="form-control" id="editDistrict" required></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group"><label for="editState" class="form-label">State</label><input
+                                type="text" class="form-control" id="editState" required></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group"><label for="editPincode" class="form-label">Pincode</label><input
+                                type="text" class="form-control" id="editPincode" pattern="[0-9]{3}\s?[0-9]{3}"
+                                required></div>
+                    </div>
+                </div>
+
                 <div class="row" id="paymentTravelRow" style="display:none;">
                     <div class="col-md-6">
                         <div class="form-group">
@@ -1795,21 +1842,38 @@
         // Render table
         function renderTable() {
             if (filteredRegistrations.length === 0) {
-                dataTableBody.innerHTML = '<tr><td colspan="10" class="text-center">No registrations found</td></tr>';
+                dataTableBody.innerHTML = '<tr><td colspan="11" class="text-center">No registrations found</td></tr>';
             } else {
                 dataTableBody.innerHTML = '';
 
-                filteredRegistrations.forEach(registration => {
+                filteredRegistrations.forEach((registration, index) => {
                     const row = document.createElement('tr');
                     row.setAttribute('data-id', registration.id);
 
+                    // Format address for display
+                    let addressDisplay = '';
+                    if (registration.address) {
+                        addressDisplay = `
+                            <div class="address-display">
+                                <span class="address-line">${registration.address.houseName || ''}</span>
+                                <span class="address-line">${registration.address.city || ''}</span>
+                                <span class="address-line">${registration.address.district || ''}</span>
+                                <span class="address-line">${registration.address.state || ''}</span>
+                                <span class="address-line">${registration.address.pinCode || ''}</span>
+                            </div>
+                        `;
+                    } else {
+                        addressDisplay = '<span class="text-muted">No address</span>';
+                    }
+
                     row.innerHTML = `
-                        <td>${registration.id.substring(0, 8)}</td>
+                        <td>${index + 1}</td>
                         <td class="editable" data-field="fullName">${registration.fullName}</td>
-                        <td class="editable" data-field="email">${registration.email}</td>
                         <td class="editable" data-field="phone">${registration.phone}</td>
-                        <td class="editable" data-field="college">${registration.college}</td>
                         <td class="editable" data-field="gender">${registration.gender}</td>
+                        <td class="editable" data-field="email">${registration.email}</td>
+                        <td class="editable" data-field="college">${registration.college}</td>
+                        <td class="editable" data-field="address">${addressDisplay}</td>
                         <td class="editable" data-field="jaagoRegistered">
                             <span class="status-badge ${registration.jaagoRegistered === 'Yes' ? 'status-yes' : 'status-no'}">
                                 ${registration.jaagoRegistered}
@@ -1871,6 +1935,15 @@
         // Make cell editable
         function makeEditable(cell) {
             const field = cell.getAttribute('data-field');
+
+            // Skip address field for inline editing (use modal instead)
+            if (field === 'address') {
+                const row = cell.closest('tr');
+                const id = row.getAttribute('data-id');
+                openEditModal(id);
+                return;
+            }
+
             const value = cell.textContent.trim();
 
             // Create input element
@@ -2101,6 +2174,21 @@
                 document.getElementById('editGender').value = registration.gender;
                 document.getElementById('editJaago').value = registration.jaagoRegistered;
 
+                // Populate address fields
+                if (registration.address) {
+                    document.getElementById('editHouseName').value = registration.address.houseName || '';
+                    document.getElementById('editCity').value = registration.address.city || '';
+                    document.getElementById('editDistrict').value = registration.address.district || '';
+                    document.getElementById('editState').value = registration.address.state || '';
+                    document.getElementById('editPincode').value = registration.address.pinCode || '';
+                } else {
+                    document.getElementById('editHouseName').value = '';
+                    document.getElementById('editCity').value = '';
+                    document.getElementById('editDistrict').value = '';
+                    document.getElementById('editState').value = '';
+                    document.getElementById('editPincode').value = '';
+                }
+
                 if (registration.jaagoRegistered === 'Yes') {
                     paymentTravelRow.style.display = 'flex';
                     document.getElementById('editPayment').checked = registration.paymentCompleted === true;
@@ -2117,6 +2205,15 @@
         function handleFormSubmit(e) {
             e.preventDefault();
 
+            // Create address object
+            const address = {
+                houseName: document.getElementById('editHouseName').value,
+                city: document.getElementById('editCity').value,
+                district: document.getElementById('editDistrict').value,
+                state: document.getElementById('editState').value,
+                pinCode: document.getElementById('editPincode').value
+            };
+
             const formData = {
                 fullName: document.getElementById('editName').value,
                 email: document.getElementById('editEmail').value,
@@ -2124,6 +2221,7 @@
                 college: document.getElementById('editCollege').value,
                 gender: document.getElementById('editGender').value,
                 jaagoRegistered: document.getElementById('editJaago').value,
+                address: address,
                 paymentCompleted: document.getElementById('editJaago').value === 'Yes' ?
                     document.getElementById('editPayment').checked : 'N/A',
                 travelConfirmed: document.getElementById('editJaago').value === 'Yes' ?
@@ -2206,15 +2304,30 @@
                 applyFilter();
             } else {
                 filteredRegistrations = registrations.filter(registration => {
-                    return registration.fullName.toLowerCase().includes(searchTerm) ||
-                        registration.email.toLowerCase().includes(searchTerm) ||
-                        registration.phone.includes(searchTerm) ||
-                        registration.college.toLowerCase().includes(searchTerm) ||
-                        registration.gender.toLowerCase().includes(searchTerm) ||
-                        registration.jaagoRegistered.toLowerCase().includes(searchTerm) ||
-                        (registration.paymentCompleted === true ? 'Yes' :
-                            registration.paymentCompleted === false ? 'No' : 'N/A').toLowerCase().includes(searchTerm) ||
-                        registration.travelConfirmed.toLowerCase().includes(searchTerm);
+                    // Check if search term matches any field
+                    const nameMatch = registration.fullName && registration.fullName.toLowerCase().includes(searchTerm);
+                    const emailMatch = registration.email && registration.email.toLowerCase().includes(searchTerm);
+                    const phoneMatch = registration.phone && registration.phone.includes(searchTerm);
+                    const collegeMatch = registration.college && registration.college.toLowerCase().includes(searchTerm);
+                    const genderMatch = registration.gender && registration.gender.toLowerCase().includes(searchTerm);
+                    const jaagoMatch = registration.jaagoRegistered && registration.jaagoRegistered.toLowerCase().includes(searchTerm);
+                    const paymentMatch = (registration.paymentCompleted === true ? 'Yes' :
+                        registration.paymentCompleted === false ? 'No' : 'N/A').toLowerCase().includes(searchTerm);
+                    const travelMatch = registration.travelConfirmed && registration.travelConfirmed.toLowerCase().includes(searchTerm);
+
+                    // Check if search term matches any address field
+                    let addressMatch = false;
+                    if (registration.address) {
+                        const houseNameMatch = registration.address.houseName && registration.address.houseName.toLowerCase().includes(searchTerm);
+                        const cityMatch = registration.address.city && registration.address.city.toLowerCase().includes(searchTerm);
+                        const districtMatch = registration.address.district && registration.address.district.toLowerCase().includes(searchTerm);
+                        const stateMatch = registration.address.state && registration.address.state.toLowerCase().includes(searchTerm);
+                        const pinCodeMatch = registration.address.pinCode && registration.address.pinCode.includes(searchTerm);
+
+                        addressMatch = houseNameMatch || cityMatch || districtMatch || stateMatch || pinCodeMatch;
+                    }
+
+                    return nameMatch || emailMatch || phoneMatch || collegeMatch || genderMatch || jaagoMatch || paymentMatch || travelMatch || addressMatch;
                 });
 
                 renderTable();
@@ -2257,14 +2370,19 @@
             setButtonLoading(exportBtn, true);
 
             // Create CSV content
-            const headers = ['ID', 'Name', 'Email', 'Phone', 'College', 'Gender', 'JAAGO', 'Payment', 'Travel', 'Registered At'];
-            const rows = filteredRegistrations.map(registration => [
-                registration.id,
+            const headers = ['Sl. No', 'Name', 'Phone', 'Gender', 'Email', 'College', 'House Name', 'Town/City', 'District', 'State', 'Pincode', 'JAAGO', 'Payment', 'Travel', 'Registered At'];
+            const rows = filteredRegistrations.map((registration, index) => [
+                index + 1,
                 registration.fullName,
-                registration.email,
                 registration.phone,
-                registration.college,
                 registration.gender,
+                registration.email,
+                registration.college,
+                registration.address ? registration.address.houseName || '' : '',
+                registration.address ? registration.address.city || '' : '',
+                registration.address ? registration.address.district || '' : '',
+                registration.address ? registration.address.state || '' : '',
+                registration.address ? registration.address.pinCode || '' : '',
                 registration.jaagoRegistered,
                 registration.paymentCompleted === true ? 'Yes' :
                     registration.paymentCompleted === false ? 'No' : 'N/A',
